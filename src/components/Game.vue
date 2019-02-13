@@ -9,15 +9,16 @@ import MainScene from '@/scenes/MainScene'
 
 const config: GameConfig = {
   type: Phaser.AUTO,
-  width: 800,
-  height: 600,
+  width: 1000,
+  height: 750,
   backgroundColor: '#CCCCCC',
   parent: 'game-container',
   scene: MainScene,
   physics: {
     default: 'arcade',
     arcade: {
-      gravity: { y: 300 }
+      gravity: { y: 2000 },
+      debug: true
     }
   }
 }

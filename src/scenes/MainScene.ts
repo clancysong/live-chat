@@ -43,9 +43,10 @@ class MainScene extends Phaser.Scene {
   ]
   private WS_URL = 'ws://127.0.0.1:10000'
   private EVENT_TYPE = {
-    OTHER_PLAYERS: 'other players',
-    NEW_PLAYER: 'new player',
+    INIT_OTHER_PLAYERS: 'init other players',
+    CREATE_PLAYER: 'create player',
     PLAYER_MOVEMENT: 'player movement',
+    ADD_OTHER_PLAYER: 'add other player',
     REMOVE_PLAYER: 'remove player'
   }
 
@@ -62,12 +63,6 @@ class MainScene extends Phaser.Scene {
 
     this.textures.generate('alien', { data: this.ALIEN, pixelWidth: 4 })
 
-    const id = this.generateRandomId()
-
-    this.player = { id, sprite: this.physics.add.sprite(500, 400, 'alien') }
-    this.player.sprite.setCollideWorldBounds(true)
-    this.physics.add.collider(this.platforms, this.player.sprite)
-
     this.keys = {
       LEFT: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A),
       RIGHT: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D),
@@ -76,56 +71,63 @@ class MainScene extends Phaser.Scene {
 
     this.ws = new WebSocket(this.WS_URL)
 
-    this.ws.onopen = () => {
-      this.ws.send(
-        JSON.stringify({ type: this.EVENT_TYPE.NEW_PLAYER, body: { id, x: 500, y: 400 } })
-      )
-    }
-
-    this.ws.onclose = () => {
-      this.ws.send(JSON.stringify({ type: this.EVENT_TYPE.REMOVE_PLAYER, body: { id }}))
-    }
-
     this.ws.onmessage = this.handleMessage
+
+    window.addEventListener('beforeunload', () => {
+      this.ws.send(
+        JSON.stringify({ type: this.EVENT_TYPE.REMOVE_PLAYER, body: { id: this.player.id } })
+      )
+    })
   }
 
   public update(): void {
-    const { id, sprite } = this.player
-    const { x, y } = sprite
+    if (this.player) {
+      const { id, sprite } = this.player
+      const { x, y } = sprite
 
-    if (x !== this.oldPlayerPosition.x || y !== this.oldPlayerPosition.y) {
-      this.ws.send(JSON.stringify({ type: this.EVENT_TYPE.PLAYER_MOVEMENT, body: { id, x, y } }))
-    }
+      if (x !== this.oldPlayerPosition.x || y !== this.oldPlayerPosition.y) {
+        this.ws.send(JSON.stringify({ type: this.EVENT_TYPE.PLAYER_MOVEMENT, body: { id, x, y } }))
+      }
 
-    this.oldPlayerPosition = { x, y }
+      this.oldPlayerPosition = { x, y }
 
-    if (this.keys.LEFT.isDown) {
-      sprite.setVelocityX(-300)
-    } else if (this.keys.RIGHT.isDown) {
-      sprite.setVelocityX(300)
-    } else {
-      sprite.setVelocityX(0)
-    }
+      if (this.keys.LEFT.isDown) {
+        sprite.setVelocityX(-300)
+      } else if (this.keys.RIGHT.isDown) {
+        sprite.setVelocityX(300)
+      } else {
+        sprite.setVelocityX(0)
+      }
 
-    if (this.keys.JUMP.isDown && sprite.body.touching.down) {
-      sprite.setVelocityY(-1000)
+      if (this.keys.JUMP.isDown && sprite.body.touching.down) {
+        sprite.setVelocityY(-1000)
+      }
     }
   }
-
-  private generateRandomId = () => `player-${new Date().getTime()}`
 
   private handleMessage = (event: MessageEvent) => {
     const data = JSON.parse(event.data)
 
     switch (data.type) {
-      case this.EVENT_TYPE.OTHER_PLAYERS: {
-        data.body.forEach((playerInfo: PlayerInfo) => {
-          this.addOtherPlayer(playerInfo)
-        })
+      case this.EVENT_TYPE.CREATE_PLAYER: {
+        this.player = {
+          id: data.body.id,
+          sprite: this.physics.add.sprite(data.body.x, data.body.y, 'alien')
+        }
+        this.player.sprite.setCollideWorldBounds(true)
+        this.physics.add.collider(this.platforms, this.player.sprite)
+      }
+
+      case this.EVENT_TYPE.INIT_OTHER_PLAYERS: {
+        if (data.body instanceof Array) {
+          data.body.forEach((playerInfo: PlayerInfo) => {
+            this.addOtherPlayer(playerInfo)
+          })
+        }
         break
       }
 
-      case this.EVENT_TYPE.NEW_PLAYER: {
+      case this.EVENT_TYPE.ADD_OTHER_PLAYER: {
         this.addOtherPlayer(data.body)
         break
       }
@@ -143,10 +145,11 @@ class MainScene extends Phaser.Scene {
       case this.EVENT_TYPE.REMOVE_PLAYER: {
         this.otherPlayers.forEach((player: Player, index) => {
           if (data.body.id === player.id) {
-           player.sprite.destroy()
-           this.otherPlayers.splice(index, 1)
+            player.sprite.destroy()
+            this.otherPlayers.splice(index, 1)
           }
         })
+        break
       }
 
       default: {

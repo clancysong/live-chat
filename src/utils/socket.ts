@@ -11,7 +11,7 @@ enum EVENT_TYPE {
   REMOVE_PLAYER = 'remove player'
 }
 
-class PlayerSocket {
+class Socket {
   private WS_URL = 'ws://127.0.0.1:10000'
 
   private ws: WebSocket
@@ -45,5 +45,5 @@ class PlayerSocket {
   }
 }
 
-export default PlayerSocket
+export default new Socket()
 export { EVENT_TYPE }

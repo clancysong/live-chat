@@ -1,4 +1,4 @@
-import PlayerSocket, { EVENT_TYPE } from '@/sockets/PlayerSocket'
+import socket, { EVENT_TYPE } from '@/utils/socket'
 
 interface Keys {
   LEFT: Phaser.Input.Keyboard.Key
@@ -42,7 +42,6 @@ class MainScene extends Phaser.Scene {
   private oldPlayerPosition = { x: 500, y: 400 }
   private otherPlayers: Player[] = []
   private keys: Keys
-  private socket: PlayerSocket
 
   constructor() {
     super('main')
@@ -63,7 +62,7 @@ class MainScene extends Phaser.Scene {
       JUMP: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE)
     }
 
-    this.initSocket()
+    this.bindSocketEvents()
   }
 
   public update(): void {
@@ -73,7 +72,7 @@ class MainScene extends Phaser.Scene {
 
       if (x !== this.oldPlayerPosition.x || y !== this.oldPlayerPosition.y) {
         const playerInfo: PlayerInfo = { id, x, y }
-        this.socket.send(EVENT_TYPE.PLAYER_MOVEMENT, playerInfo)
+        socket.send(EVENT_TYPE.PLAYER_MOVEMENT, playerInfo)
       }
 
       this.oldPlayerPosition = { x, y }
@@ -92,17 +91,15 @@ class MainScene extends Phaser.Scene {
     }
   }
 
-  private initSocket = () => {
-    this.socket = new PlayerSocket()
-
-    this.socket.on(EVENT_TYPE.INIT_OTHER_PLAYERS, data => this.initOtherPlayers(data))
-    this.socket.on(EVENT_TYPE.CREATE_PLAYER, data => this.createPlayer(data))
-    this.socket.on(EVENT_TYPE.ADD_OTHER_PLAYER, data => this.addOtherPlayer(data))
-    this.socket.on(EVENT_TYPE.PLAYER_MOVEMENT, data => this.playerMovement(data))
-    this.socket.on(EVENT_TYPE.REMOVE_PLAYER, data => this.removePlayer(data))
+  private bindSocketEvents = () => {
+    socket.on(EVENT_TYPE.INIT_OTHER_PLAYERS, data => this.initOtherPlayers(data))
+    socket.on(EVENT_TYPE.CREATE_PLAYER, data => this.createPlayer(data))
+    socket.on(EVENT_TYPE.ADD_OTHER_PLAYER, data => this.addOtherPlayer(data))
+    socket.on(EVENT_TYPE.PLAYER_MOVEMENT, data => this.playerMovement(data))
+    socket.on(EVENT_TYPE.REMOVE_PLAYER, data => this.removePlayer(data))
 
     window.addEventListener('beforeunload', () => {
-      this.socket.send(EVENT_TYPE.REMOVE_PLAYER, { id: this.player.id })
+      socket.send(EVENT_TYPE.REMOVE_PLAYER, { id: this.player.id })
     })
   }
 

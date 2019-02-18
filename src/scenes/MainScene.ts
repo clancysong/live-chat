@@ -1,3 +1,5 @@
+import PlayerSocket, { EVENT_TYPE } from '@/sockets/PlayerSocket'
+
 interface Keys {
   LEFT: Phaser.Input.Keyboard.Key
   RIGHT: Phaser.Input.Keyboard.Key
@@ -16,13 +18,6 @@ interface Player {
 }
 
 class MainScene extends Phaser.Scene {
-  private platforms: Phaser.Physics.Arcade.StaticGroup
-  private player: Player
-  private oldPlayerPosition = { x: 500, y: 400 }
-  private otherPlayers: Player[] = []
-  private keys: Keys
-  private ws: WebSocket
-
   private ALIEN = [
     '....44........',
     '....44........',
@@ -41,14 +36,13 @@ class MainScene extends Phaser.Scene {
     '.AAAAAAAAAAAA.',
     '.5AAAAAAAAAA5.'
   ]
-  private WS_URL = 'ws://127.0.0.1:10000'
-  private EVENT_TYPE = {
-    INIT_OTHER_PLAYERS: 'init other players',
-    CREATE_PLAYER: 'create player',
-    PLAYER_MOVEMENT: 'player movement',
-    ADD_OTHER_PLAYER: 'add other player',
-    REMOVE_PLAYER: 'remove player'
-  }
+
+  private platforms: Phaser.Physics.Arcade.StaticGroup
+  private player: Player
+  private oldPlayerPosition = { x: 500, y: 400 }
+  private otherPlayers: Player[] = []
+  private keys: Keys
+  private socket: PlayerSocket
 
   constructor() {
     super('main')
@@ -69,15 +63,7 @@ class MainScene extends Phaser.Scene {
       JUMP: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE)
     }
 
-    this.ws = new WebSocket(this.WS_URL)
-
-    this.ws.onmessage = this.handleMessage
-
-    window.addEventListener('beforeunload', () => {
-      this.ws.send(
-        JSON.stringify({ type: this.EVENT_TYPE.REMOVE_PLAYER, body: { id: this.player.id } })
-      )
-    })
+    this.initSocket()
   }
 
   public update(): void {
@@ -86,7 +72,8 @@ class MainScene extends Phaser.Scene {
       const { x, y } = sprite
 
       if (x !== this.oldPlayerPosition.x || y !== this.oldPlayerPosition.y) {
-        this.ws.send(JSON.stringify({ type: this.EVENT_TYPE.PLAYER_MOVEMENT, body: { id, x, y } }))
+        const playerInfo: PlayerInfo = { id, x, y }
+        this.socket.send(EVENT_TYPE.PLAYER_MOVEMENT, playerInfo)
       }
 
       this.oldPlayerPosition = { x, y }
@@ -105,57 +92,31 @@ class MainScene extends Phaser.Scene {
     }
   }
 
-  private handleMessage = (event: MessageEvent) => {
-    const data = JSON.parse(event.data)
+  private initSocket = () => {
+    this.socket = new PlayerSocket()
 
-    switch (data.type) {
-      case this.EVENT_TYPE.CREATE_PLAYER: {
-        this.player = {
-          id: data.body.id,
-          sprite: this.physics.add.sprite(data.body.x, data.body.y, 'alien')
-        }
-        this.player.sprite.setCollideWorldBounds(true)
-        this.physics.add.collider(this.platforms, this.player.sprite)
-      }
+    this.socket.on(EVENT_TYPE.INIT_OTHER_PLAYERS, data => this.initOtherPlayers(data))
+    this.socket.on(EVENT_TYPE.CREATE_PLAYER, data => this.createPlayer(data))
+    this.socket.on(EVENT_TYPE.ADD_OTHER_PLAYER, data => this.addOtherPlayer(data))
+    this.socket.on(EVENT_TYPE.PLAYER_MOVEMENT, data => this.playerMovement(data))
+    this.socket.on(EVENT_TYPE.REMOVE_PLAYER, data => this.removePlayer(data))
 
-      case this.EVENT_TYPE.INIT_OTHER_PLAYERS: {
-        if (data.body instanceof Array) {
-          data.body.forEach((playerInfo: PlayerInfo) => {
-            this.addOtherPlayer(playerInfo)
-          })
-        }
-        break
-      }
+    window.addEventListener('beforeunload', () => {
+      this.socket.send(EVENT_TYPE.REMOVE_PLAYER, { id: this.player.id })
+    })
+  }
 
-      case this.EVENT_TYPE.ADD_OTHER_PLAYER: {
-        this.addOtherPlayer(data.body)
-        break
-      }
+  private initOtherPlayers = (playersInfo: PlayerInfo[]) => {
+    playersInfo.forEach((playerInfo: PlayerInfo) => this.addOtherPlayer(playerInfo))
+  }
 
-      case this.EVENT_TYPE.PLAYER_MOVEMENT: {
-        this.otherPlayers.forEach((player: Player) => {
-          if (data.body.id === player.id) {
-            player.sprite.x = data.body.x
-            player.sprite.y = data.body.y
-          }
-        })
-        break
-      }
-
-      case this.EVENT_TYPE.REMOVE_PLAYER: {
-        this.otherPlayers.forEach((player: Player, index) => {
-          if (data.body.id === player.id) {
-            player.sprite.destroy()
-            this.otherPlayers.splice(index, 1)
-          }
-        })
-        break
-      }
-
-      default: {
-        throw new Error('Type Error')
-      }
+  private createPlayer = (playerInfo: PlayerInfo) => {
+    this.player = {
+      id: playerInfo.id,
+      sprite: this.physics.add.sprite(playerInfo.x, playerInfo.y, 'alien')
     }
+    this.player.sprite.setCollideWorldBounds(true)
+    this.physics.add.collider(this.platforms, this.player.sprite)
   }
 
   private addOtherPlayer = (playerInfo: PlayerInfo) => {
@@ -164,6 +125,24 @@ class MainScene extends Phaser.Scene {
     this.physics.add.collider(this.platforms, player)
 
     this.otherPlayers.push({ id: playerInfo.id, sprite: player })
+  }
+
+  private playerMovement = (playerInfo: PlayerInfo) => {
+    this.otherPlayers.forEach((player: Player) => {
+      if (playerInfo.id === player.id) {
+        player.sprite.x = playerInfo.x
+        player.sprite.y = playerInfo.y
+      }
+    })
+  }
+
+  private removePlayer = (playerInfo: { id: string }) => {
+    this.otherPlayers.forEach((player: Player, index) => {
+      if (playerInfo.id === player.id) {
+        player.sprite.destroy()
+        this.otherPlayers.splice(index, 1)
+      }
+    })
   }
 }
 

@@ -30,6 +30,20 @@
   dependencies:
     "@fortawesome/fontawesome-common-types" "^0.2.15"
 
+"@fortawesome/free-brands-svg-icons@^5.7.2":
+  version "5.7.2"
+  resolved "http://registry.npm.taobao.org/@fortawesome/free-brands-svg-icons/download/@fortawesome/free-brands-svg-icons-5.7.2.tgz#80ea37f12d22a281a5eadcd0cd3c870683e5dec1"
+  integrity sha1-gOo38S0iooGl6tzQzTyHBoPl3sE=
+  dependencies:
+    "@fortawesome/fontawesome-common-types" "^0.2.15"
+
+"@fortawesome/free-regular-svg-icons@^5.7.2":
+  version "5.7.2"
+  resolved "http://registry.npm.taobao.org/@fortawesome/free-regular-svg-icons/download/@fortawesome/free-regular-svg-icons-5.7.2.tgz#7113bf9df5a970918b8cac8eb45e5ad120818741"
+  integrity sha1-cRO/nfWpcJGLjKyOtF5a0SCBh0E=
+  dependencies:
+    "@fortawesome/fontawesome-common-types" "^0.2.15"
+
 "@fortawesome/free-solid-svg-icons@^5.4.1":
   version "5.7.2"
   resolved "http://registry.npm.taobao.org/@fortawesome/free-solid-svg-icons/download/@fortawesome/free-solid-svg-icons-5.7.2.tgz#9ec2ed353d630092a8e19cc8aae2f716572963e5"
@@ -4995,6 +5009,11 @@ map-visit@^1.0.0:
   dependencies:
     object-visit "^1.0.0"
 
+material-design-icons@^3.0.1:
+  version "3.0.1"
+  resolved "http://registry.npm.taobao.org/material-design-icons/download/material-design-icons-3.0.1.tgz#9a71c48747218ebca51e51a66da682038cdcb7bf"
+  integrity sha1-mnHEh0chjrylHlGmbaaCA4zct78=
+
 math-random@^1.0.1:
   version "1.0.4"
   resolved "http://registry.npm.taobao.org/math-random/download/math-random-1.0.4.tgz#5dd6943c938548267016d4e34f057583080c514c"
@@ -8237,6 +8256,11 @@ vue-loader@^15.6.2:
     loader-utils "^1.1.0"
     vue-hot-reload-api "^2.3.0"
     vue-style-loader "^4.1.0"
+
+vue-material-design-icons@^3.0.0:
+  version "3.0.0"
+  resolved "http://registry.npm.taobao.org/vue-material-design-icons/download/vue-material-design-icons-3.0.0.tgz#db387aa604e12523180d17db315126f6311d3e13"
+  integrity sha1-2zh6pgThJSMYDRfbMVEm9jEdPhM=
 
 vue-property-decorator@^7.0.0:
   version "7.3.0"

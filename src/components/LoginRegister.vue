@@ -2,11 +2,12 @@
   <div class="login-and-register">
     <main :class="{ flipped }">
       <div class="card front">
-        <login-form flip="flip"/>
+        <login-form/>
+
         <div class="side">
           <h1>Hello, Friend!</h1>
           <p>Enter your personnel details and start journey with us</p>
-          <el-button type="primary" round>SIGN UP</el-button>
+          <el-button @click="flip" type="primary" round>SIGN UP</el-button>
         </div>
       </div>
 
@@ -14,9 +15,10 @@
         <div class="side">
           <h1>Welcome Back!</h1>
           <p>To keep connected with us please login with your personnal info</p>
-          <el-button type="primary" round>SIGN IN</el-button>
+          <el-button @click="flip" type="primary" round>SIGN IN</el-button>
         </div>
-        <div class="register-form">This is back</div>
+
+        <register-form/>
       </div>
     </main>
   </div>
@@ -25,8 +27,9 @@
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator'
 import LoginForm from '@/components/LoginForm.vue'
+import RegisterForm from '@/components/RegisterForm.vue'
 
-@Component({ components: { LoginForm } })
+@Component({ components: { LoginForm, RegisterForm } })
 export default class LoginRegister extends Vue {
   private flipped = false
 
@@ -127,6 +130,10 @@ export default class LoginRegister extends Vue {
     .back {
       z-index: -1;
       transform: rotateY(-180deg);
+
+      .register-form {
+        flex: 0 0 62.2%;
+      }
 
       .side {
         border-top-left-radius: 12px;

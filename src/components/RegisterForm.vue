@@ -16,36 +16,72 @@
 
     <p>or use your email for registrarion:</p>
 
-    <el-form :model="form">
-      <el-form-item>
+    <el-form :model="form" :rules="rules" ref="form">
+      <el-form-item prop="name">
         <el-input v-model="form.name" placeholder="Name">
-          <font-awesome-icon slot="prefix" icon="envelope" size="lg"/>
+          <font-awesome-icon slot="prefix" icon="user" size="lg"/>
         </el-input>
       </el-form-item>
 
-      <el-form-item>
+      <el-form-item prop="email">
         <el-input v-model="form.email" placeholder="Email">
           <font-awesome-icon slot="prefix" icon="envelope" size="lg"/>
         </el-input>
       </el-form-item>
 
-      <el-form-item>
+      <el-form-item prop="password">
         <el-input v-model="form.password" type="password" placeholder="Password">
           <font-awesome-icon slot="prefix" icon="lock" size="lg"/>
         </el-input>
       </el-form-item>
     </el-form>
 
-    <el-button type="primary" round>SIGN IN</el-button>
+    <el-button type="primary" round @click="submit">SIGN IN</el-button>
   </div>
 </template>
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator'
+import { ElForm } from 'element-ui/types/form'
+import axios from 'axios'
 
 @Component
 export default class RegisterForm extends Vue {
+  $refs!: { form: ElForm }
+
+  private URL = '/api/v1/register'
+
   private form = { name: '', email: '', password: '' }
+  private rules = {
+    name: [
+      { required: true, message: 'Please enter your name' },
+      { max: 10, message: 'Name cannot be longer than 10 characters' }
+    ],
+    email: [
+      { required: true, message: 'Please enter your email' },
+      { type: 'email', message: 'Not a valid email' }
+    ],
+    password: [
+      { required: true, message: 'Please enter your password' },
+      { min: 6, max: 15, message: 'Password must be between 6 and 15 characters' }
+    ]
+  }
+
+  private submit() {
+    this.$refs.form.validate(async valid => {
+      if (valid) this.register()
+    })
+  }
+
+  private async register() {
+    const fd = new FormData()
+
+    fd.append('name', this.form.name)
+    fd.append('email', this.form.email)
+    fd.append('password', this.form.password)
+
+    return await axios.post(this.URL, fd)
+  }
 }
 </script>
 
@@ -81,7 +117,7 @@ export default class RegisterForm extends Vue {
 
     > a > svg:hover {
       color: #666666;
-      transition: all .2s;
+      transition: all 0.2s;
     }
   }
 

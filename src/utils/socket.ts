@@ -12,7 +12,7 @@ enum EVENT_TYPE {
 }
 
 class Socket {
-  private WS_URL = 'ws://127.0.0.1:10000'
+  private WS_URL = 'ws://127.0.0.1:5000'
 
   private ws: WebSocket
   private events: Event[]

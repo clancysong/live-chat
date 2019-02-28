@@ -16,21 +16,21 @@
 
     <p>or use your email for registrarion:</p>
 
-    <el-form :model="form" :rules="rules" ref="form">
+    <el-form :model="formData" :rules="rules" ref="form">
       <el-form-item prop="name">
-        <el-input v-model="form.name" placeholder="Name">
+        <el-input v-model="formData.name" placeholder="Name">
           <font-awesome-icon slot="prefix" icon="user" size="lg"/>
         </el-input>
       </el-form-item>
 
       <el-form-item prop="email">
-        <el-input v-model="form.email" placeholder="Email">
+        <el-input v-model="formData.email" placeholder="Email">
           <font-awesome-icon slot="prefix" icon="envelope" size="lg"/>
         </el-input>
       </el-form-item>
 
       <el-form-item prop="password">
-        <el-input v-model="form.password" type="password" placeholder="Password">
+        <el-input v-model="formData.password" type="password" placeholder="Password">
           <font-awesome-icon slot="prefix" icon="lock" size="lg"/>
         </el-input>
       </el-form-item>
@@ -42,16 +42,17 @@
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator'
+import { Action } from 'vuex-class'
 import { ElForm } from 'element-ui/types/form'
 import axios from 'axios'
 
 @Component
 export default class RegisterForm extends Vue {
-  $refs!: { form: ElForm }
+  @Action('register') private registerAction: (data: {}) => void
 
   private URL = '/api/v1/register'
 
-  private form = { name: '', email: '', password: '' }
+  private formData = { name: '', email: '', password: '' }
   private rules = {
     name: [
       { required: true, message: 'Please enter your name' },
@@ -67,20 +68,20 @@ export default class RegisterForm extends Vue {
     ]
   }
 
+  get form() {
+    return this.$refs.form as ElForm
+  }
+
   private submit() {
-    this.$refs.form.validate(async valid => {
+    this.form.validate(async valid => {
       if (valid) this.register()
     })
   }
 
   private async register() {
-    const fd = new FormData()
-
-    fd.append('name', this.form.name)
-    fd.append('email', this.form.email)
-    fd.append('password', this.form.password)
-
-    return await axios.post(this.URL, fd)
+    this.form.validate(valid => {
+      if (valid) this.registerAction(this.formData)
+    })
   }
 }
 </script>

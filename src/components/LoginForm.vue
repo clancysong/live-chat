@@ -16,15 +16,15 @@
 
     <p>or use your email account:</p>
 
-    <el-form :model="form" :rules="rules" ref="form">
+    <el-form :model="formData" :rules="rules" ref="form">
       <el-form-item prop="email">
-        <el-input v-model="form.email" placeholder="Email">
+        <el-input v-model="formData.email" placeholder="Email">
           <font-awesome-icon slot="prefix" icon="envelope" size="lg"/>
         </el-input>
       </el-form-item>
 
       <el-form-item prop="password">
-        <el-input type="password" v-model="form.password" placeholder="Password">
+        <el-input type="password" v-model="formData.password" placeholder="Password">
           <font-awesome-icon slot="prefix" icon="lock" size="lg"/>
         </el-input>
       </el-form-item>
@@ -40,16 +40,16 @@
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator'
+import { Action } from 'vuex-class'
 import { ElForm } from 'element-ui/types/form'
-import axios from 'axios'
 
 @Component
 export default class LoginForm extends Vue {
-  $refs!: { form: ElForm }
+  @Action('login') private actionLogin: (data: {}) => void
 
   private URL = 'api/v1/login'
 
-  private form = { email: '', password: '' }
+  private formData = { email: '', password: '' }
   private rules = {
     email: [
       { required: true, message: 'Please enter your email' },
@@ -58,19 +58,14 @@ export default class LoginForm extends Vue {
     password: [{ required: true, message: 'Password cannot be empty' }]
   }
 
-  private submit() {
-    this.$refs.form.validate(valid => {
-      if (valid) this.login()
-    })
+  get form() {
+    return this.$refs.form as ElForm
   }
 
-  private async login() {
-    const fd = new FormData()
-
-    fd.append('email', this.form.email)
-    fd.append('password', this.form.password)
-
-    return await axios.post(this.URL, fd)
+  private submit() {
+    this.form.validate(valid => {
+      if (valid) this.actionLogin(this.formData)
+    })
   }
 }
 </script>

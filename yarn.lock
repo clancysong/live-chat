@@ -5009,11 +5009,6 @@ map-visit@^1.0.0:
   dependencies:
     object-visit "^1.0.0"
 
-material-design-icons@^3.0.1:
-  version "3.0.1"
-  resolved "http://registry.npm.taobao.org/material-design-icons/download/material-design-icons-3.0.1.tgz#9a71c48747218ebca51e51a66da682038cdcb7bf"
-  integrity sha1-mnHEh0chjrylHlGmbaaCA4zct78=
-
 math-random@^1.0.1:
   version "1.0.4"
   resolved "http://registry.npm.taobao.org/math-random/download/math-random-1.0.4.tgz#5dd6943c938548267016d4e34f057583080c514c"
@@ -8257,11 +8252,6 @@ vue-loader@^15.6.2:
     vue-hot-reload-api "^2.3.0"
     vue-style-loader "^4.1.0"
 
-vue-material-design-icons@^3.0.0:
-  version "3.0.0"
-  resolved "http://registry.npm.taobao.org/vue-material-design-icons/download/vue-material-design-icons-3.0.0.tgz#db387aa604e12523180d17db315126f6311d3e13"
-  integrity sha1-2zh6pgThJSMYDRfbMVEm9jEdPhM=
-
 vue-property-decorator@^7.0.0:
   version "7.3.0"
   resolved "http://registry.npm.taobao.org/vue-property-decorator/download/vue-property-decorator-7.3.0.tgz#d50d67f0b0f1c814f9f2fba36d6eeccbcc62dbb6"
@@ -8299,6 +8289,11 @@ vue@^2.5.22:
   version "2.6.5"
   resolved "http://registry.npm.taobao.org/vue/download/vue-2.6.5.tgz#7a7e8723b875b91800e576aac41cb3ed325dddf0"
   integrity sha1-en6HI7h1uRgA5XaqxByz7TJd3fA=
+
+vuex-class@^0.3.1:
+  version "0.3.1"
+  resolved "http://registry.npm.taobao.org/vuex-class/download/vuex-class-0.3.1.tgz#3c0b946bcff4cf2be1904de5b0cab1a3dd5c41d5"
+  integrity sha1-PAuUa8/0zyvhkE3lsMqxo91cQdU=
 
 vuex@^3.0.1:
   version "3.1.0"

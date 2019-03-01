@@ -1,6 +1,6 @@
 <template>
   <div class="register-form">
-    <h1>Create Account</h1>
+    <h1>注册账户</h1>
 
     <div class="links">
       <a href>
@@ -14,29 +14,29 @@
       </a>
     </div>
 
-    <p>or use your email for registrarion:</p>
+    <p>或使用你的邮箱登录：</p>
 
     <el-form :model="formData" :rules="rules" ref="form">
       <el-form-item prop="name">
-        <el-input v-model="formData.name" placeholder="Name">
+        <el-input v-model="formData.name" placeholder="名字">
           <font-awesome-icon slot="prefix" icon="user" size="lg"/>
         </el-input>
       </el-form-item>
 
       <el-form-item prop="email">
-        <el-input v-model="formData.email" placeholder="Email">
+        <el-input v-model="formData.email" placeholder="邮箱">
           <font-awesome-icon slot="prefix" icon="envelope" size="lg"/>
         </el-input>
       </el-form-item>
 
       <el-form-item prop="password">
-        <el-input v-model="formData.password" type="password" placeholder="Password">
+        <el-input v-model="formData.password" type="password" placeholder="密码">
           <font-awesome-icon slot="prefix" icon="lock" size="lg"/>
         </el-input>
       </el-form-item>
     </el-form>
 
-    <el-button type="primary" round @click="submit">SIGN IN</el-button>
+    <el-button type="primary" round @click="submit">注&nbsp;&nbsp;&nbsp;&nbsp;册</el-button>
   </div>
 </template>
 
@@ -55,16 +55,16 @@ export default class RegisterForm extends Vue {
   private formData = { name: '', email: '', password: '' }
   private rules = {
     name: [
-      { required: true, message: 'Please enter your name' },
-      { max: 10, message: 'Name cannot be longer than 10 characters' }
+      { required: true, message: '请输入你的用户名' },
+      { max: 10, message: '用户名不能超过10个字符' }
     ],
     email: [
-      { required: true, message: 'Please enter your email' },
-      { type: 'email', message: 'Not a valid email' }
+      { required: true, message: '请输入你的邮箱' },
+      { type: 'email', message: '不是一个合法的邮箱' }
     ],
     password: [
-      { required: true, message: 'Please enter your password' },
-      { min: 6, max: 15, message: 'Password must be between 6 and 15 characters' }
+      { required: true, message: '请输入你的密码' },
+      { min: 6, max: 15, message: '密码长度必须在6到15位之间' }
     ]
   }
 
@@ -100,6 +100,7 @@ export default class RegisterForm extends Vue {
   > h1 {
     color: #3bb19b;
     font-weight: 900;
+    letter-spacing: 4px;
   }
 
   .links {
@@ -143,14 +144,6 @@ export default class RegisterForm extends Vue {
 
   > p > a {
     color: #464847;
-  }
-
-  .el-button {
-    outline: none;
-    padding-left: 64px;
-    padding-right: 64px;
-    letter-spacing: 2px;
-    margin-top: 24px;
   }
 }
 </style>

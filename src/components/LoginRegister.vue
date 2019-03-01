@@ -5,17 +5,19 @@
         <login-form/>
 
         <div class="side">
-          <h1>Hello, Friend!</h1>
-          <p>Enter your personnel details and start journey with us</p>
-          <el-button @click="flip" type="primary" round>SIGN UP</el-button>
+          <h1>你好，朋友！</h1>
+          <p>填写你的个人信息
+            <br>并开始加入我们
+          </p>
+          <el-button @click="flip" type="primary" round>注&nbsp;&nbsp;&nbsp;&nbsp;册</el-button>
         </div>
       </div>
 
       <div class="card back">
         <div class="side">
-          <h1>Welcome Back!</h1>
-          <p>To keep connected with us please login with your personnal info</p>
-          <el-button @click="flip" type="primary" round>SIGN IN</el-button>
+          <h1>欢迎回来！</h1>
+          <p>登录你的个人账号<br>以连接到服务器</p>
+          <el-button @click="flip" type="primary" round>登&nbsp;&nbsp;&nbsp;&nbsp;录</el-button>
         </div>
 
         <register-form/>
@@ -65,6 +67,13 @@ export default class LoginRegister extends Vue {
   background: #f0f4f3;
   perspective: 1000;
 
+  .el-button {
+    outline: none;
+    padding-left: 64px;
+    padding-right: 64px;
+    border: 1px solid #fff;
+  }
+
   main.flipped {
     transform: rotateY(180deg);
   }
@@ -102,14 +111,6 @@ export default class LoginRegister extends Vue {
 
         > p {
           margin: 24px 0 48px;
-        }
-
-        .el-button {
-          outline: none;
-          padding-left: 64px;
-          padding-right: 64px;
-          letter-spacing: 2px;
-          border: 1px solid #fff;
         }
       }
     }

@@ -8,22 +8,31 @@
       :collapse="true"
     >
       <el-menu-item index="1">
-        <router-link to="/groups">
+        <router-link to="/">
           <font-awesome-icon :icon="['fas', 'grin-alt']" size="lg"/>
-          <span slot="title">导航一</span>
+          <span slot="title">home</span>
         </router-link>
       </el-menu-item>
+
       <el-menu-item index="2">
-        <font-awesome-icon :icon="['fas', 'grin-alt']" size="lg"/>
-        <span slot="title">导航二</span>
+        <router-link to="/groups/1">
+          <font-awesome-icon :icon="['fas', 'grin-alt']" size="lg"/>
+          <span slot="title">导航二</span>
+        </router-link>
       </el-menu-item>
+
       <el-menu-item index="3">
-        <font-awesome-icon :icon="['fas', 'grin-alt']" size="lg"/>
-        <span slot="title">导航三</span>
+        <router-link to="/groups/2">
+          <font-awesome-icon :icon="['fas', 'grin-alt']" size="lg"/>
+          <span slot="title">导航三</span>
+        </router-link>
       </el-menu-item>
+      
       <el-menu-item index="4">
-        <font-awesome-icon :icon="['fas', 'grin-alt']" size="lg"/>
-        <span slot="title">导航四</span>
+        <router-link to="/groups/3">
+          <font-awesome-icon :icon="['fas', 'grin-alt']" size="lg"/>
+          <span slot="title">导航四</span>
+        </router-link>
       </el-menu-item>
     </el-menu>
   </div>

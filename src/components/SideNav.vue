@@ -27,7 +27,7 @@
           <span slot="title">导航三</span>
         </router-link>
       </el-menu-item>
-      
+
       <el-menu-item index="4">
         <router-link to="/groups/3">
           <font-awesome-icon :icon="['fas', 'grin-alt']" size="lg"/>
@@ -49,11 +49,12 @@ export default class SideNav extends Vue {}
 .side-nav {
   $side-nav-width: 70px;
 
-  width: $side-nav-width;
   height: 100%;
 
   .menu {
+    width: $side-nav-width;
     height: 100%;
+    border: none;
   }
 }
 </style>

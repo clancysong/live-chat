@@ -12,7 +12,7 @@ axios.interceptors.response.use(
     const { status, data } = err.response
 
     if (status === 401) {
-      Message({ message: 'Please login first!', type: 'warning', center: true })
+      Message({ message: '请先登录！', type: 'warning', center: true })
       router.push({ path: '/login' })
     } else {
       console.log(data.message)

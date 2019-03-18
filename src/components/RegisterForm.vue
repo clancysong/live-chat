@@ -74,12 +74,6 @@ export default class RegisterForm extends Vue {
 
   private submit() {
     this.form.validate(async valid => {
-      if (valid) this.register()
-    })
-  }
-
-  private async register() {
-    this.form.validate(valid => {
       if (valid) this.registerAction(this.formData)
     })
   }

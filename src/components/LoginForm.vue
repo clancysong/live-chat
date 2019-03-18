@@ -45,7 +45,7 @@ import { ElForm } from 'element-ui/types/form'
 
 @Component
 export default class LoginForm extends Vue {
-  @Action('login') private actionLogin: (data: {}) => void
+  @Action('login') private loginAction: (data: {}) => void
 
   private URL = 'api/v1/login'
 
@@ -64,7 +64,7 @@ export default class LoginForm extends Vue {
 
   private submit() {
     this.form.validate(valid => {
-      if (valid) this.actionLogin(this.formData)
+      if (valid) this.loginAction(this.formData)
     })
   }
 }

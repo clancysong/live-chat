@@ -12,5 +12,5 @@ const store = new Vuex.Store({ state, getters, mutations, actions })
 export default store
 
 export interface State {
-  userInfo: {}
+  userInfo: {} | null
 }

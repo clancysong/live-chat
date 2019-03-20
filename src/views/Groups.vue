@@ -12,7 +12,7 @@ import GroupChat from '@/components/GroupChat.vue'
 
 @Component({ components: { Channels, GroupChat } })
 export default class Groups extends Vue {
-  @Prop(Number) readonly id: number
+  @Prop(Number) private readonly id: number
 }
 </script>
 

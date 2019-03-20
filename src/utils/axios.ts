@@ -3,11 +3,7 @@ import { Message } from 'element-ui'
 import router from '@/router'
 
 axios.interceptors.response.use(
-  (response: AxiosResponse): any => {
-    const { status } = response.data
-    if (status === 'success') return response.data
-    else return undefined
-  },
+  (response: AxiosResponse) => response,
   (err: any) => {
     const { status, data } = err.response
 

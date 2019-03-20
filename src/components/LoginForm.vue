@@ -47,8 +47,6 @@ import { ElForm } from 'element-ui/types/form'
 export default class LoginForm extends Vue {
   @Action('login') private loginAction: (data: {}) => void
 
-  private URL = 'api/v1/login'
-
   private formData = { email: '', password: '' }
   private rules = {
     email: [

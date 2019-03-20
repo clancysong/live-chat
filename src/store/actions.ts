@@ -12,7 +12,7 @@ const actions: ActionTree<State, any> = {
     const rs = await authService.register(data)
     if (rs) router.push({ path: '/' })
   },
-  async authorize(context, data: {}) {
+  async authorize(context) {
     const rs = await authService.authorize()
     context.commit('setUserInfo', rs.data)
   }

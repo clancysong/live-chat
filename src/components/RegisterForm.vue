@@ -50,8 +50,6 @@ import axios from 'axios'
 export default class RegisterForm extends Vue {
   @Action('register') private registerAction: (data: {}) => void
 
-  private URL = '/api/v1/register'
-
   private formData = { name: '', email: '', password: '' }
   private rules = {
     name: [

@@ -1,6 +1,6 @@
 import axios from '@/utils/axios'
 
-const URL = 'api/v1'
+const URL = '/api/v1'
 
 export const authorize = () => axios.get(`${URL}/authorize`)
 

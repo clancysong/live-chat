@@ -56,7 +56,7 @@ import io from '@/utils/socket'
 
 @Component
 export default class GroupChat extends Vue {
-  @Prop(String) readonly id: string
+  @Prop(Number) readonly id: number
 
   private inputValue = ''
 

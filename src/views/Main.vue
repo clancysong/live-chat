@@ -13,10 +13,6 @@ import SideNav from '@/components/SideNav.vue'
 @Component({ components: { SideNav } })
 export default class Main extends Vue {
   @Action('authorize') private authorizeAction: () => void
-
-  private created() {
-    this.authorizeAction()
-  }
 }
 </script>
 

@@ -1,17 +1,19 @@
 <template>
   <div class="groups">
     <channels/>
-    <group-chat/>
+    <group-chat :id="id"/>
   </div>
 </template>
 
 <script lang="ts">
-import { Vue, Component } from 'vue-property-decorator'
+import { Vue, Component, Prop } from 'vue-property-decorator'
 import Channels from '@/components/Channels.vue'
 import GroupChat from '@/components/GroupChat.vue'
 
 @Component({ components: { Channels, GroupChat } })
-export default class Groups extends Vue {}
+export default class Groups extends Vue {
+  @Prop(String) readonly id: string
+}
 </script>
 
 <style lang="scss">

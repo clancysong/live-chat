@@ -17,9 +17,8 @@
           </div>
         </div>
 
-        <form action="" class="chat-form">
-          <el-input/>
-        </form>
+        <el-input v-model="inputValue"/>
+        <el-button @click="submit">发送</el-button>
       </div>
 
       <div class="members">
@@ -27,11 +26,11 @@
           <h2>在线 - 2人</h2>
           <ul>
             <li>
-              <img src="" alt="">
+              <img src alt>
               <h4>user1</h4>
             </li>
             <li>
-              <img src="" alt="">
+              <img src alt>
               <h4>user2</h4>
             </li>
           </ul>
@@ -41,7 +40,7 @@
           <h2>离线 - 1人</h2>
           <ul>
             <li>
-              <img src="" alt="">
+              <img src alt>
               <h4>user3</h4>
             </li>
           </ul>
@@ -52,10 +51,23 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component } from 'vue-property-decorator'
+import { Vue, Component, Prop } from 'vue-property-decorator'
+import io from '@/utils/socket'
 
 @Component
-export default class GroupChat extends Vue {}
+export default class GroupChat extends Vue {
+  @Prop(String) readonly id: string
+
+  private inputValue = ''
+
+  private created() {
+    console.log(this.id)
+  }
+
+  private submit() {
+    io.emit('test', this.inputValue)
+  }
+}
 </script>
 
 <style lang="scss">

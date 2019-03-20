@@ -17,7 +17,11 @@ const router = new Router({
           name: 'home',
           component: () => import('./views/Home.vue'),
           children: [
-            { path: 'community', name: 'community', component: () => import('./views/Community.vue') },
+            {
+              path: 'community',
+              name: 'community',
+              component: () => import('./views/Community.vue')
+            },
             { path: 'friends', name: 'friends', component: () => import('./views/Friends.vue') },
             { path: 'profile', name: 'profile', component: () => import('./views/Profile.vue') }
           ]
@@ -25,7 +29,8 @@ const router = new Router({
         {
           path: 'groups/:id',
           name: 'groups',
-          component: () => import('./views/Groups.vue')
+          component: () => import('./views/Groups.vue'),
+          props: route => ({ id: parseInt(route.params.id, 10) })
         }
       ]
     },

@@ -1,37 +1,23 @@
 <template>
   <div class="side-nav">
     <el-menu
-      default-active="1"
+      default-active="0"
       class="menu"
       background-color="#202224"
       text-color="#fff"
       :collapse="true"
     >
-      <el-menu-item index="1">
+      <el-menu-item index="0">
         <router-link to="/">
           <font-awesome-icon :icon="['fas', 'grin-alt']" size="lg"/>
           <span slot="title">home</span>
         </router-link>
       </el-menu-item>
 
-      <el-menu-item index="2">
-        <router-link to="/groups/1">
+      <el-menu-item v-for="group in groups" :key="group.id" :index="group.id.toString()">
+        <router-link :to="`/groups/${group.id}`">
           <font-awesome-icon :icon="['fas', 'grin-alt']" size="lg"/>
-          <span slot="title">导航二</span>
-        </router-link>
-      </el-menu-item>
-
-      <el-menu-item index="3">
-        <router-link to="/groups/2">
-          <font-awesome-icon :icon="['fas', 'grin-alt']" size="lg"/>
-          <span slot="title">导航三</span>
-        </router-link>
-      </el-menu-item>
-
-      <el-menu-item index="4">
-        <router-link to="/groups/3">
-          <font-awesome-icon :icon="['fas', 'grin-alt']" size="lg"/>
-          <span slot="title">导航四</span>
+          <span slot="title">{{ group.name }}</span>
         </router-link>
       </el-menu-item>
     </el-menu>
@@ -40,9 +26,22 @@
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator'
+import { Action, State } from 'vuex-class'
+import List from '@/utils/List'
 
 @Component
-export default class SideNav extends Vue {}
+export default class SideNav extends Vue {
+  @Action('fetchGroups') private fetchGroupsAction: () => void
+  @State('groups') private groupsState: List
+
+  get groups() {
+    return this.groupsState.getAll()
+  }
+
+  private created() {
+    this.fetchGroupsAction()
+  }
+}
 </script>
 
 <style lang="scss">

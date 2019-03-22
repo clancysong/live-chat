@@ -52,13 +52,19 @@
 
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator'
+import { Action, State, Getter } from 'vuex-class'
 import io from '@/utils/socket'
 
 @Component
 export default class GroupChat extends Vue {
   @Prop(Number) private readonly id: number
+  @Getter('getCurrentGroup') private getCurrentGroup: (id: number) => {}
 
   private inputValue = ''
+
+  private created() {
+    console.log(this.getCurrentGroup(this.id))
+  }
 
   private submit() {
     io.emit('test', this.inputValue)

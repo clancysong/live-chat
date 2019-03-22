@@ -44,7 +44,7 @@ const router = new Router({
 })
 
 router.beforeEach(async (to, from, next) => {
-  if (to.name === 'login' || store.state.userInfo) {
+  if (to.name === 'login' || store.state.user) {
     next()
   } else {
     await store.dispatch('authorize')

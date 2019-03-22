@@ -1,20 +1,34 @@
 import { ActionTree } from 'vuex'
 import router from '@/router'
 import * as authService from '@/services/auth'
+import groupService from '@/services/group'
 import { State } from './index'
 
 const actions: ActionTree<State, any> = {
-  async login(context, data: {}) {
+  async login({ commit }, data: {}) {
     const rs = await authService.login(data)
-    if (rs) router.push({ path: '/' })
+    if (rs) {
+      commit('setUser', rs.data)
+      router.push({ path: '/' })
+    }
   },
-  async register(context, data: {}) {
+
+  async register({ commit }, data: {}) {
     const rs = await authService.register(data)
-    if (rs) router.push({ path: '/' })
+    if (rs) {
+      commit('setUser', rs.data)
+      router.push({ path: '/' })
+    }
   },
-  async authorize(context) {
+
+  async authorize({ commit }) {
     const rs = await authService.authorize()
-    context.commit('setUserInfo', rs.data)
+    commit('setUser', rs.data)
+  },
+
+  async fetchGroups({ commit }, id) {
+    const rs = await groupService.fetchGroups()
+    commit('setGroups', rs.data)
   }
 }
 

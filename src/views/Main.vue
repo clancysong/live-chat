@@ -11,9 +11,7 @@ import { Action } from 'vuex-class'
 import SideNav from '@/components/SideNav.vue'
 
 @Component({ components: { SideNav } })
-export default class Main extends Vue {
-  @Action('authorize') private authorizeAction: () => void
-}
+export default class Main extends Vue {}
 </script>
 
 <style lang="scss">

@@ -1,3 +1,6 @@
+import List from '@/utils/List'
+
 export default {
-  userInfo: null
+  user: null,
+  groups: new List()
 }

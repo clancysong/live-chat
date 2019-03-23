@@ -1,7 +1,7 @@
 <template>
   <div class="channels">
     <div class="title-bar">
-      <h4>{{ userInfo.name }}</h4>
+      <h4>{{ userState.name }}</h4>
     </div>
   </div>
 </template>
@@ -12,7 +12,7 @@ import { State } from 'vuex-class'
 
 @Component
 export default class Channels extends Vue {
-  @State('userInfo') private userInfo: {}
+  @State('user') private userState: {}
 }
 </script>
 

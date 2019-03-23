@@ -1,24 +1,26 @@
 <template>
   <div class="side-nav">
     <el-menu
-      default-active="0"
+      default-active="home"
       class="menu"
       background-color="#202224"
       text-color="#fff"
       :collapse="true"
+      :router="true"
     >
-      <el-menu-item index="0">
-        <router-link to="/">
-          <font-awesome-icon :icon="['fas', 'grin-alt']" size="lg"/>
-          <span slot="title">home</span>
-        </router-link>
+      <el-menu-item index="home" route="/">
+        <font-awesome-icon :icon="['fas', 'grin-alt']" size="lg"/>
+        <span slot="title">home</span>
       </el-menu-item>
 
-      <el-menu-item v-for="group in groups" :key="group.id" :index="group.id.toString()">
-        <router-link :to="`/groups/${group.id}`">
-          <font-awesome-icon :icon="['fas', 'grin-alt']" size="lg"/>
-          <span slot="title">{{ group.name }}</span>
-        </router-link>
+      <el-menu-item
+        v-for="group in groups"
+        :key="group.id"
+        :index="`group-${group.id}`"
+        :route="`/groups/${group.id}`"
+      >
+        <font-awesome-icon :icon="['fas', 'grin-alt']" size="lg"/>
+        <span slot="title">{{ group.name }}</span>
       </el-menu-item>
     </el-menu>
   </div>

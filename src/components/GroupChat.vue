@@ -62,10 +62,6 @@ export default class GroupChat extends Vue {
 
   private inputValue = ''
 
-  private created() {
-    console.log(this.getCurrentGroup(this.id))
-  }
-
   private submit() {
     io.emit('test', this.inputValue)
   }

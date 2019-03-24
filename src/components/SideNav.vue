@@ -17,7 +17,7 @@
         v-for="group in groups"
         :key="group.id"
         :index="`group-${group.id}`"
-        :route="`/groups/${group.id}`"
+        :route="`/group/${group.id}`"
       >
         <font-awesome-icon :icon="['fas', 'grin-alt']" size="lg"/>
         <span slot="title">{{ group.name }}</span>
@@ -33,15 +33,10 @@ import List from '@/utils/List'
 
 @Component
 export default class SideNav extends Vue {
-  @Action('fetchGroups') private fetchGroupsAction: () => void
-  @State('groups') private groupsState: List
+  @State('user') private userState: any
 
-  get groups() {
-    return this.groupsState.getAll()
-  }
-
-  private created() {
-    this.fetchGroupsAction()
+  private get groups() {
+    return this.userState.groupsInfo
   }
 }
 </script>

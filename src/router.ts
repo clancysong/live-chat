@@ -28,8 +28,8 @@ const router = new Router({
           ]
         },
         {
-          path: 'groups/:id',
-          name: 'groups',
+          path: 'group/:id',
+          name: 'group',
           component: () => import('./views/Groups.vue'),
           props: route => ({ id: parseInt(route.params.id, 10) })
         }
@@ -44,10 +44,10 @@ const router = new Router({
 })
 
 router.beforeEach(async (to, from, next) => {
-  if (to.name === 'login' || store.state.user) {
+  if (to.name === 'login' || Object.keys(store.state.user).length > 0) {
     next()
   } else {
-    await store.dispatch('authorize')
+    await store.dispatch('fetchUserInfo')
     next()
   }
 })

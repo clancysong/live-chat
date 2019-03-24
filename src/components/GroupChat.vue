@@ -10,9 +10,13 @@
               <img class="avatar">
             </div>
             <div class="right">
-              <h4 class="name">cicec</h4>
-              <p class="date">2019年1月13日</p>
-              <p class="content">哈哈</p>
+              <ul class="messages-list">
+                <li v-for="message in groupInfo.messagesInfo" :key="message.id">
+                  <h4 class="name">{{ message.creator }}</h4>
+                  <p class="date">{{ message.created_at }}</p>
+                  <p class="content">{{ message.content }}</p>
+                </li>
+              </ul>
             </div>
           </div>
         </div>
@@ -24,25 +28,9 @@
       <div class="members">
         <div class="online">
           <h2>在线 - 2人</h2>
-          <ul>
-            <li>
-              <img src alt>
-              <h4>user1</h4>
-            </li>
-            <li>
-              <img src alt>
-              <h4>user2</h4>
-            </li>
-          </ul>
-        </div>
 
-        <div class="offline">
-          <h2>离线 - 1人</h2>
-          <ul>
-            <li>
-              <img src alt>
-              <h4>user3</h4>
-            </li>
+          <ul class="members-list">
+            <li v-for="member in groupInfo.membersInfo" :key="member.id">{{ member.name }}</li>
           </ul>
         </div>
       </div>
@@ -54,13 +42,19 @@
 import { Vue, Component, Prop } from 'vue-property-decorator'
 import { Action, State, Getter } from 'vuex-class'
 import io from '@/utils/socket'
+// import Group from '@/models/group'
 
 @Component
 export default class GroupChat extends Vue {
   @Prop(Number) private readonly id: number
-  @Getter('getCurrentGroup') private getCurrentGroup: (id: number) => {}
+  @Action('fetchGroupInfo') private fetchGroupInfo: (id: number) => void
+  @State('group') private groupInfo: {}
 
   private inputValue = ''
+
+  private created() {
+    this.fetchGroupInfo(this.id)
+  }
 
   private submit() {
     io.emit('test', this.inputValue)
@@ -96,6 +90,10 @@ export default class GroupChat extends Vue {
 
       .messages {
         flex: 1;
+
+        .messages-list {
+          list-style: none;
+        }
       }
 
       .chat-form {
@@ -107,6 +105,10 @@ export default class GroupChat extends Vue {
       flex: 0 0 240px;
       height: 100%;
       background: #f3f3f3;
+
+      .members-list {
+        list-style: none;
+      }
     }
   }
 }

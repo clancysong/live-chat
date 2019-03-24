@@ -23,8 +23,16 @@ const router = new Router({
               name: 'community',
               component: () => import('./views/Community.vue')
             },
-            { path: 'friends', name: 'friends', component: () => import('./views/Friends.vue') },
-            { path: 'profile', name: 'profile', component: () => import('./views/Profile.vue') }
+            {
+              path: 'friends',
+              name: 'friends',
+              component: () => import('./views/Friends.vue')
+            },
+            {
+              path: 'profile',
+              name: 'profile',
+              component: () => import('./views/Profile.vue')
+            }
           ]
         },
         {
@@ -44,12 +52,15 @@ const router = new Router({
 })
 
 router.beforeEach(async (to, from, next) => {
-  if (to.name === 'login' || Object.keys(store.state.user).length > 0) {
-    next()
-  } else {
+  if (to.name !== 'login' && Object.keys(store.state.user).length === 0) {
     await store.dispatch('fetchUserInfo')
-    next()
   }
+
+  if (to.name === 'group') {
+    await store.dispatch('fetchGroupInfo', to.params.id)
+  }
+
+  next()
 })
 
 export default router

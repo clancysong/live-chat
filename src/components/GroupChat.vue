@@ -42,19 +42,13 @@
 import { Vue, Component, Prop } from 'vue-property-decorator'
 import { Action, State, Getter } from 'vuex-class'
 import io from '@/utils/socket'
-// import Group from '@/models/group'
 
 @Component
 export default class GroupChat extends Vue {
   @Prop(Number) private readonly id: number
-  @Action('fetchGroupInfo') private fetchGroupInfo: (id: number) => void
   @State('group') private groupInfo: {}
 
   private inputValue = ''
-
-  private created() {
-    this.fetchGroupInfo(this.id)
-  }
 
   private submit() {
     io.emit('test', this.inputValue)

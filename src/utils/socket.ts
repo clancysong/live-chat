@@ -1,3 +1,5 @@
-import SocketIO from 'socket.io-client'
+import IO from 'socket.io-client'
 
-export default SocketIO()
+const io = IO()
+
+export default io

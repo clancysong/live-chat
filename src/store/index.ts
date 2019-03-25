@@ -4,6 +4,8 @@ import state from './state'
 import getters from './getters'
 import mutations from './mutations'
 import actions from './actions'
+import User from '@/models/User'
+import Group from '@/models/Group'
 
 Vue.use(Vuex)
 
@@ -12,6 +14,6 @@ const store = new Vuex.Store({ state, getters, mutations, actions })
 export default store
 
 export interface State {
-  user: {}
-  group: {}
+  user: User | null
+  group: Group | null
 }

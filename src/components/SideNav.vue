@@ -30,13 +30,14 @@
 import { Vue, Component } from 'vue-property-decorator'
 import { Action, State } from 'vuex-class'
 import List from '@/utils/List'
+import User from '@/models/User'
 
 @Component
 export default class SideNav extends Vue {
-  @State('user') private userState: any
+  @State('user') private user: User
 
   private get groups() {
-    return this.userState.groupsInfo
+    return this.user.groupsInfo
   }
 }
 </script>

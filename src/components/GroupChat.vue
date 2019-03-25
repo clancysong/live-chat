@@ -27,10 +27,16 @@
 
       <div class="members">
         <div class="online">
-          <h2>在线 - 2人</h2>
+          <h2>在线 - {{ onlineMembers.length }}人</h2>
 
           <ul class="members-list">
-            <li v-for="member in groupInfo.membersInfo" :key="member.id">{{ member.name }}</li>
+            <li v-for="member in onlineMembers" :key="member.id">{{ member.name }}</li>
+          </ul>
+
+          <h2>离线 - {{ offlineMembers.length }}人</h2>
+
+          <ul class="members-list">
+            <li v-for="member in offlineMembers" :key="member.id">{{ member.name }}</li>
           </ul>
         </div>
       </div>
@@ -40,15 +46,44 @@
 
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator'
-import { Action, State, Getter } from 'vuex-class'
+import { Action, State, Getter, Mutation } from 'vuex-class'
 import io from '@/utils/socket'
+import Group from '@/models/Group'
 
 @Component
 export default class GroupChat extends Vue {
   @Prop(Number) private readonly id: number
-  @State('group') private groupInfo: {}
+  @State('group') private groupInfo: Group
 
   private inputValue = ''
+
+  private get members() {
+    if (this.groupInfo) return this.groupInfo.membersInfo
+    else return []
+  }
+
+  private get onlineMembers() {
+    return this.members.filter(member => member.online)
+  }
+
+  private get offlineMembers() {
+    return this.members.filter(member => !member.online)
+  }
+
+  constructor() {
+    super()
+    io.on('user comes online', (id: number) => {
+      console.log(id)
+    })
+  }
+
+  private created() {
+    io.emit('connect to group', this.groupInfo)
+  }
+
+  private updated() {
+    io.emit('connect to group', this.groupInfo)
+  }
 
   private submit() {
     io.emit('test', this.inputValue)

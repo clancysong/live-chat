@@ -52,7 +52,7 @@ const router = new Router({
 })
 
 router.beforeEach(async (to, from, next) => {
-  if (to.name !== 'login' && Object.keys(store.state.user).length === 0) {
+  if (!(to.name === 'login' || store.state.user)) {
     await store.dispatch('fetchUserInfo')
   }
 

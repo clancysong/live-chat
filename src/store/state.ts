@@ -1,6 +1,6 @@
 import List from '@/utils/List'
 
 export default {
-  user: {},
-  group: {}
+  user: null,
+  group: null
 }

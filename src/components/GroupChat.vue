@@ -11,8 +11,8 @@
             </div>
             <div class="right">
               <ul class="messages-list">
-                <li v-for="message in groupInfo.messagesInfo" :key="message.id">
-                  <h4 class="name">{{ message.creator }}</h4>
+                <li v-for="message in currentGroup.messages" :key="message.id">
+                  <h4 class="name">{{ message.creator_name }}</h4>
                   <p class="date">{{ message.created_at }}</p>
                   <p class="content">{{ message.content }}</p>
                 </li>
@@ -53,12 +53,12 @@ import Group from '@/models/Group'
 @Component
 export default class GroupChat extends Vue {
   @Prop(Number) private readonly id: number
-  @State('group') private groupInfo: Group
+  @State('currentGroup') private currentGroup: Group
 
   private inputValue = ''
 
   private get members() {
-    if (this.groupInfo) return this.groupInfo.membersInfo
+    if (this.currentGroup) return this.currentGroup.members
     else return []
   }
 
@@ -73,20 +73,20 @@ export default class GroupChat extends Vue {
   constructor() {
     super()
     io.on('user comes online', (id: number) => {
-      console.log(id)
+      console.log('用户上线：', id)
     })
   }
 
   private created() {
-    io.emit('connect to group', this.groupInfo)
+    io.emit('connect to group', this.currentGroup)
   }
 
   private updated() {
-    io.emit('connect to group', this.groupInfo)
+    io.emit('connect to group', this.currentGroup)
   }
 
   private submit() {
-    io.emit('test', this.inputValue)
+    io.emit('send message', this.inputValue)
   }
 }
 </script>

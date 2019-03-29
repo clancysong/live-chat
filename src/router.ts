@@ -54,6 +54,7 @@ const router = new Router({
 router.beforeEach(async (to, from, next) => {
   if (!(to.name === 'login' || store.state.user)) {
     await store.dispatch('fetchUserInfo')
+    await store.dispatch('fetchGroups')
   }
 
   if (to.name === 'group') {

@@ -30,10 +30,16 @@ const actions: ActionTree<State, any> = {
     commit('setUser', rs.data)
   },
 
+  async fetchGroups({ commit }) {
+    const rs = await groupService.fetchGroups()
+
+    commit('setGroups', rs.data)
+  },
+
   async fetchGroupInfo({ commit }, id: number) {
     const rs = await groupService.fetchGroupInfo(id)
 
-    commit('setGroup', rs.data)
+    commit('setCurrentGroup', rs.data)
   }
 }
 

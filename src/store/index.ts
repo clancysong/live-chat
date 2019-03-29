@@ -15,5 +15,6 @@ export default store
 
 export interface State {
   user: User | null
-  group: Group | null
+  groups: Group[] | null
+  currentGroup: Group | null
 }

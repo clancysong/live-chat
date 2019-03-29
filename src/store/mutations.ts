@@ -6,8 +6,12 @@ const mutations: MutationTree<State> = {
     state.user = payload
   },
 
-  setGroup(state, payload) {
-    state.group = payload
+  setGroups(state, payload) {
+    state.groups = payload
+  },
+
+  setCurrentGroup(state, payload) {
+    state.currentGroup = payload
   }
 }
 

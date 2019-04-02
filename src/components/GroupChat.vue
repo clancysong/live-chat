@@ -9,7 +9,7 @@
             <li v-for="message in currentGroup.messages" :key="message.id">
               <div class="left">
                 <div class="avatar">
-                  <font-awesome-icon :icon="['fas', 'grin-alt']" size="lg"/>
+                  <font-awesome-icon :icon="['fas', 'bomb']" size="lg"/>
                 </div>
               </div>
               <div class="right">
@@ -27,16 +27,26 @@
 
       <div class="members">
         <div class="online">
-          <h2>在线 - {{ onlineMembers.length }}人</h2>
+          <div class="title">在线 - {{ onlineMembers.length }}人</div>
 
           <ul class="members-list">
-            <li v-for="member in onlineMembers" :key="member.id">{{ member.name }}</li>
+            <li v-for="member in onlineMembers" :key="member.id">
+              <div class="avatar">
+                <font-awesome-icon :icon="['fas', 'bomb']" size="lg"/>
+              </div>
+              <div class="name">{{ member.name }}</div>
+            </li>
           </ul>
 
-          <h2>离线 - {{ offlineMembers.length }}人</h2>
+          <div class="title">离线 - {{ offlineMembers.length }}人</div>
 
           <ul class="members-list">
-            <li v-for="member in offlineMembers" :key="member.id">{{ member.name }}</li>
+            <li v-for="member in offlineMembers" :key="member.id">
+              <div class="avatar">
+                <font-awesome-icon :icon="['fas', 'bomb']" size="lg"/>
+              </div>
+              <div class="name">{{ member.name }}</div>
+            </li>
           </ul>
         </div>
       </div>
@@ -139,8 +149,13 @@ export default class GroupChat extends Vue {
               padding: 0 20px;
 
               .avatar {
-                color: #464847;
-                font-size: 31px;
+                width: 40px;
+                height: 40px;
+                line-height: 40px;
+                border-radius: 100%;
+                background: #f04747;
+                color: #ffffff;
+                font-size: 16px;
               }
             }
 
@@ -153,11 +168,13 @@ export default class GroupChat extends Vue {
                 font-size: 16px;
                 color: #43464a;
                 margin-right: 6px;
+                font-weight: 500;
               }
 
               .date {
                 font-size: 12px;
                 color: #99aab5;
+                font-weight: 500;
               }
 
               .content {
@@ -166,6 +183,7 @@ export default class GroupChat extends Vue {
                 color: #747f8d;
                 text-align: start;
                 margin-top: 6px;
+                font-weight: 400;
               }
             }
           }
@@ -181,9 +199,44 @@ export default class GroupChat extends Vue {
       flex: 0 0 240px;
       height: 100%;
       background: #f3f3f3;
+      padding: 20px;
+
+      .title {
+        text-align: start;
+        color: #99aab5;
+        font-size: 12px;
+        font-weight: 600;
+        margin-bottom: 6px;
+        letter-spacing: 0.08em;
+        overflow: hidden;
+      }
 
       .members-list {
         list-style: none;
+        padding: 0;
+
+        > li {
+          padding: 8px;
+          display: flex;
+          align-items: center;
+
+          .avatar {
+            width: 30px;
+            height: 30px;
+            line-height: 30px;
+            border-radius: 100%;
+            background: #f04747;
+            color: #ffffff;
+            font-size: 12px;
+          }
+
+          .name {
+            color: #72767d;
+            font-size: 16px;
+            font-weight: 500;
+            margin: 0 8px;
+          }
+        }
       }
     }
   }

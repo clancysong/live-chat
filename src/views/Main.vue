@@ -18,5 +18,7 @@ export default class Main extends Vue {}
 .main {
   height: 100vh;
   display: flex;
+  font-family: Whitney, 'Microsoft YaHei New', 微软雅黑, 'Microsoft Yahei', 'Microsoft JhengHei', 宋体, SimSun,
+    'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 </style>

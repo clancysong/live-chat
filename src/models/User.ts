@@ -5,9 +5,6 @@ export default interface User {
   email: string
   name: string
   password: string
-  online: boolean
-  groups: number[]
-  friends: number[]
-  friends_request: number[]
-  groupsInfo?: Group[]
+  status: string
+  groups: Group[]
 }

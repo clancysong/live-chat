@@ -2,16 +2,20 @@ import { MutationTree } from 'vuex'
 import { State } from './index'
 
 const mutations: MutationTree<State> = {
-  setUser(state, payload) {
-    state.user = payload
+  setUser(state, user) {
+    state.user = user
   },
 
-  setGroups(state, payload) {
-    state.groups = payload
+  setGroups(state, groups) {
+    state.groups = groups
   },
 
-  setCurrentGroup(state, payload) {
-    state.currentGroup = payload
+  setCurrentGroup(state, group) {
+    state.currentGroup = group
+  },
+
+  addMessage(state, message) {
+    if (state.currentGroup) state.currentGroup.messages.push(message)
   }
 }
 

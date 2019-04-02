@@ -9,7 +9,7 @@
       :router="true"
     >
       <el-menu-item index="home" route="/">
-        <font-awesome-icon :icon="['fas', 'grin-alt']" size="lg"/>
+        <font-awesome-icon :icon="['fas', 'home']" size="lg"/>
         <span slot="title">home</span>
       </el-menu-item>
 
@@ -19,7 +19,7 @@
         :index="`group-${group.id}`"
         :route="`/group/${group.id}`"
       >
-        <font-awesome-icon :icon="['fas', 'grin-alt']" size="lg"/>
+        <font-awesome-icon :icon="['fas', 'meh-blank']" size="lg"/>
         <span slot="title">{{ group.name }}</span>
       </el-menu-item>
     </el-menu>
@@ -29,7 +29,6 @@
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator'
 import { Action, State } from 'vuex-class'
-import List from '@/utils/List'
 import Group from '@/models/Group'
 
 @Component
@@ -48,6 +47,10 @@ export default class SideNav extends Vue {
     width: $side-nav-width;
     height: 100%;
     border: none;
+    
+    .el-menu-item {
+      font-size: 20px;
+    }
   }
 }
 </style>

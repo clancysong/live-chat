@@ -65,6 +65,7 @@ export default class Login extends Vue {
   }
 
   @include flex-center();
+  font-family: 'Avenir', 'ZCOOL KuaiLe', Helvetica, Arial, sans-serif;
   height: 100vh;
   background: #f0f4f3;
   perspective: 1000;

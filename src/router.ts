@@ -61,7 +61,10 @@ router.beforeEach(async (to, from, next) => {
 
   if (to.name === 'group') {
     await store.dispatch('fetchGroupInfo', to.params.id)
+    router.app.$socket.emit('GROUP_CONNECT', to.params.id)
   }
+
+  store.commit('setCurrentView', to)
 
   next()
 })

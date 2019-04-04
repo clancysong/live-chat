@@ -1,7 +1,7 @@
 <template>
   <div class="side-nav">
     <el-menu
-      default-active="home"
+      :default-active="activedItem"
       class="menu"
       background-color="#202224"
       text-color="#fff"
@@ -16,7 +16,7 @@
       <el-menu-item
         v-for="group in groups"
         :key="group.id"
-        :index="`group-${group.id}`"
+        :index="`group${group.id}`"
         :route="`/group/${group.id}`"
       >
         <font-awesome-icon :icon="['fas', 'meh-blank']" size="lg"/>
@@ -29,11 +29,19 @@
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator'
 import { Action, State } from 'vuex-class'
+import { Route } from 'vue-router'
 import Group from '@/models/Group'
 
 @Component
 export default class SideNav extends Vue {
+  @State('currentView') private currentView: Route
   @State('groups') private groups: Group[]
+
+  private get activedItem() {
+    const { name, params } = this.currentView
+
+    return `${name}${params.id ? params.id : ''}`
+  }
 }
 </script>
 
@@ -47,7 +55,7 @@ export default class SideNav extends Vue {
     width: $side-nav-width;
     height: 100%;
     border: none;
-    
+
     .el-menu-item {
       font-size: 20px;
     }

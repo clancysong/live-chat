@@ -57,7 +57,6 @@
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator'
 import { Action, State, Getter, Mutation } from 'vuex-class'
-import io from '@/utils/socket'
 import Group from '@/models/Group'
 import Message from '@/models/Message'
 
@@ -65,7 +64,6 @@ import Message from '@/models/Message'
 export default class GroupChat extends Vue {
   @Prop(Number) private readonly id: number
   @State('currentGroup') private currentGroup: Group
-  @Mutation('addMessage') private addMessage: (message: Message) => void
   private inputValue = ''
 
   private get members() {
@@ -81,24 +79,8 @@ export default class GroupChat extends Vue {
     return this.members.filter(member => member.status === 'offline')
   }
 
-  constructor() {
-    super()
-    io.on('receive message', (message: Message) => {
-      console.log('接收到消息：', message)
-      this.addMessage(message)
-    })
-  }
-
-  private created() {
-    io.emit('join', this.currentGroup.id)
-  }
-
-  private updated() {
-    io.emit('join', this.currentGroup.id)
-  }
-
   private submit() {
-    io.emit('send message', this.inputValue)
+    this.$socket.emit('MESSAGE_SEND', this.inputValue)
     this.inputValue = ''
   }
 }

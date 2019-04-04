@@ -107,7 +107,7 @@
   resolved "http://registry.npm.taobao.org/@types/semver/download/@types/semver-5.5.0.tgz#146c2a29ee7d3bae4bf2fcb274636e264c813c45"
   integrity sha1-FGwqKe59O65L8vyydGNuJkyBPEU=
 
-"@types/socket.io-client@^1.4.32":
+"@types/socket.io-client@1.4.32", "@types/socket.io-client@^1.4.32":
   version "1.4.32"
   resolved "http://registry.npm.taobao.org/@types/socket.io-client/download/@types/socket.io-client-1.4.32.tgz#988a65a0386c274b1c22a55377fab6a30789ac14"
   integrity sha1-mIploDhsJ0scIqVTd/q2oweJrBQ=
@@ -1386,6 +1386,11 @@ camelcase-keys@^2.0.0:
   dependencies:
     camelcase "^2.0.0"
     map-obj "^1.0.0"
+
+camelcase@5.0.0:
+  version "5.0.0"
+  resolved "http://registry.npm.taobao.org/camelcase/download/camelcase-5.0.0.tgz#03295527d58bd3cd4aa75363f35b2e8d97be2f42"
+  integrity sha1-AylVJ9WL081Kp1Nj81sujZe+L0I=
 
 camelcase@^2.0.0:
   version "2.1.1"
@@ -8383,6 +8388,14 @@ vue-router@^3.0.1:
   version "3.0.2"
   resolved "http://registry.npm.taobao.org/vue-router/download/vue-router-3.0.2.tgz#dedc67afe6c4e2bc25682c8b1c2a8c0d7c7e56be"
   integrity sha1-3txnr+bE4rwlaCyLHCqMDXx+Vr4=
+
+vue-socket.io-extended@^3.2.1:
+  version "3.2.1"
+  resolved "http://registry.npm.taobao.org/vue-socket.io-extended/download/vue-socket.io-extended-3.2.1.tgz#a7a74c83fd7e6c0ab41b8a90b09c07c9524b62fc"
+  integrity sha1-p6dMg/1+bAq0G4qQsJwHyVJLYvw=
+  dependencies:
+    "@types/socket.io-client" "1.4.32"
+    camelcase "5.0.0"
 
 vue-style-loader@^4.1.0:
   version "4.1.2"

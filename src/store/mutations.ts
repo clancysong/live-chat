@@ -2,6 +2,10 @@ import { MutationTree } from 'vuex'
 import { State } from './index'
 
 const mutations: MutationTree<State> = {
+  setCurrentView(state, route) {
+    state.currentView = route
+  },
+
   setUser(state, user) {
     state.user = user
   },
@@ -14,7 +18,7 @@ const mutations: MutationTree<State> = {
     state.currentGroup = group
   },
 
-  addMessage(state, message) {
+  SOCKET_MESSAGE_RECEIVE(state, message) {
     if (state.currentGroup) state.currentGroup.messages.push(message)
   }
 }

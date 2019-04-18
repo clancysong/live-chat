@@ -17,6 +17,7 @@ export default store
 export interface State {
   currentView: Route | null
   user: User | null
-  groups: Group[] | null
+  publicGroups: Group[]
+  joinedGroups: Group[]
   currentGroup: Group | null
 }

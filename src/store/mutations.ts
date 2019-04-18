@@ -10,8 +10,12 @@ const mutations: MutationTree<State> = {
     state.user = user
   },
 
-  setGroups(state, groups) {
-    state.groups = groups
+  setPublicGroups(state, groups) {
+    state.publicGroups = groups
+  },
+
+  setJoinedGroups(state, groups) {
+    state.joinedGroups = groups
   },
 
   setCurrentGroup(state, group) {

@@ -1,6 +1,7 @@
 export default {
   currentView: null,
   user: null,
-  groups: null,
+  publicGroups: [],
+  joinedGroups: [],
   currentGroup: null
 }

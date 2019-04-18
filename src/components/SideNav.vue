@@ -35,7 +35,7 @@ import Group from '@/models/Group'
 @Component
 export default class SideNav extends Vue {
   @State('currentView') private currentView: Route
-  @State('groups') private groups: Group[]
+  @State('joinedGroups') private groups: Group[]
 
   private get activedItem() {
     const { name, params } = this.currentView

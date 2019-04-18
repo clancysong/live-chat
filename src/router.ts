@@ -56,7 +56,11 @@ router.beforeEach(async (to, from, next) => {
     if (!store.state.user) {
       await store.dispatch('fetchUserInfo')
     }
-    await store.dispatch('fetchGroups')
+    await store.dispatch('fetchJoinedGroups')
+  }
+
+  if (to.name === 'community') {
+    await store.dispatch('fetchPublicGroups')
   }
 
   if (to.name === 'group') {

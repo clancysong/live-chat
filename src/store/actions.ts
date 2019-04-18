@@ -3,6 +3,7 @@ import router from '@/router'
 import authService from '@/services/auth'
 import userService from '@/services/user'
 import groupService from '@/services/group'
+import userGroupService from '@/services/userGroup'
 import { State } from './index'
 
 const actions: ActionTree<State, any> = {
@@ -30,16 +31,28 @@ const actions: ActionTree<State, any> = {
     commit('setUser', rs.data)
   },
 
-  async fetchGroups({ commit }) {
-    const rs = await groupService.fetchGroups()
+  async fetchPublicGroups({ commit }) {
+    const rs = await groupService.fetchPublicGroups()
 
-    commit('setGroups', rs.data)
+    commit('setPublicGroups', rs.data)
+  },
+
+  async fetchJoinedGroups({ commit }) {
+    const rs = await userGroupService.fetchJoinedGroups()
+
+    commit('setJoinedGroups', rs.data)
   },
 
   async fetchGroupInfo({ commit }, id: number) {
     const rs = await groupService.fetchGroupInfo(id)
 
     commit('setCurrentGroup', rs.data)
+  },
+
+  async joinGroup({ state }, groupId: number) {
+    if (state.user) {
+      await userGroupService.joinGroup({ user_id: state.user.id, group_id: groupId })
+    }
   }
 }
 

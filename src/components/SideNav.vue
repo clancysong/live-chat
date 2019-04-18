@@ -9,7 +9,7 @@
       :router="true"
     >
       <el-menu-item index="home" route="/">
-        <font-awesome-icon :icon="['fas', 'home']" size="lg"/>
+        <font-awesome-icon :icon="['fas', 'burn']" size="lg"/>
         <span slot="title">home</span>
       </el-menu-item>
 
@@ -19,7 +19,7 @@
         :index="`group${group.id}`"
         :route="`/group/${group.id}`"
       >
-        <font-awesome-icon :icon="['fas', 'meh-blank']" size="lg"/>
+        <font-awesome-icon :icon="['fas', 'circle']" size="lg"/>
         <span slot="title">{{ group.name }}</span>
       </el-menu-item>
     </el-menu>

@@ -1,13 +1,21 @@
 <template>
   <div class="home">
-    <h1>Home</h1>
+    <home-menu/>
     <router-view/>
   </div>
 </template>
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator'
+import HomeMenu from '@/components/HomeMenu.vue'
 
-@Component
+@Component({ components: { HomeMenu } })
 export default class Home extends Vue {}
 </script>
+
+<style lang="scss">
+.home {
+  width: 100%;
+  display: flex;
+}
+</style>

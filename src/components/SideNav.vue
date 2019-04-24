@@ -16,7 +16,7 @@
       <el-menu-item
         v-for="group in groups"
         :key="group.id"
-        :index="`group${group.id}`"
+        :index="`groups-${group.id}`"
         :route="`/groups/${group.id}`"
       >
         <font-awesome-icon :icon="['fas', 'circle']" size="lg"/>
@@ -33,8 +33,9 @@
       :show-close="false"
       :center="true"
       :visible.sync="addGroupDialogVisible"
-      :before-close="handleClose"
-    ></el-dialog>
+    >
+      <new-group/>
+    </el-dialog>
   </div>
 </template>
 
@@ -42,9 +43,10 @@
 import { Vue, Component } from 'vue-property-decorator'
 import { Action, State } from 'vuex-class'
 import { Route } from 'vue-router'
+import NewGroup from './NewGroup.vue'
 import Group from '@/models/Group'
 
-@Component
+@Component({ components: { NewGroup } })
 export default class SideNav extends Vue {
   @State('currentView') private currentView: Route
   @State('joinedGroups') private groups: Group[]
@@ -54,7 +56,7 @@ export default class SideNav extends Vue {
   private get activedItem() {
     const { name, params } = this.currentView
 
-    return `${name}${params.id ? params.id : ''}`
+    return `${name}-${params.id ? params.id : ''}`
   }
 }
 </script>

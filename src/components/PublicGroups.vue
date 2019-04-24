@@ -3,7 +3,7 @@
     <div class="groups">
       <el-row>
         <el-col v-for="group in groups" :key="group.id" :span="8">
-          <div class="card" @click="joinGroup(group.id)">
+          <div class="card" @click="joinGroup(group)">
             <div class="bg">
               <img
                 class="cover"
@@ -39,12 +39,12 @@ import Group from '@/models/Group'
 @Component
 export default class PublicGroups extends Vue {
   @State('publicGroups') private groups: Group[]
-  @Action('joinGroup') private joinGroupAction: (groupId: number) => void
+  @Action('joinGroup') private joinGroupAction: (group: Group) => void
 
-  private async joinGroup(groupId: number) {
-    const rs = await this.joinGroupAction(groupId)
+  private async joinGroup(group: Group) {
+    await this.joinGroupAction(group)
 
-    console.log(rs)
+    this.$router.push(`/groups/${group.id}`)
   }
 }
 </script>

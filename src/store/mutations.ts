@@ -22,6 +22,10 @@ const mutations: MutationTree<State> = {
     state.currentGroup = group
   },
 
+  addGroup(state, group) {
+    state.joinedGroups.push(group)
+  },
+
   SOCKET_MESSAGE_RECEIVE(state, message) {
     if (state.currentGroup) state.currentGroup.messages.push(message)
   }

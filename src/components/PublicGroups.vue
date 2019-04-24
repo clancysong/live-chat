@@ -39,7 +39,13 @@ import Group from '@/models/Group'
 @Component
 export default class PublicGroups extends Vue {
   @State('publicGroups') private groups: Group[]
-  @Action('joinGroup') private joinGroup: (groupId: number) => void
+  @Action('joinGroup') private joinGroupAction: (groupId: number) => void
+
+  private async joinGroup(groupId: number) {
+    const rs = await this.joinGroupAction(groupId)
+
+    console.log(rs)
+  }
 }
 </script>
 

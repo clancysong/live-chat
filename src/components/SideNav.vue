@@ -17,12 +17,24 @@
         v-for="group in groups"
         :key="group.id"
         :index="`group${group.id}`"
-        :route="`/group/${group.id}`"
+        :route="`/groups/${group.id}`"
       >
         <font-awesome-icon :icon="['fas', 'circle']" size="lg"/>
         <span slot="title">{{ group.name }}</span>
       </el-menu-item>
+
+      <el-button @click="addGroupDialogVisible =  true">
+        <font-awesome-icon :icon="['fas', 'plus']" size="lg"/>
+      </el-button>
     </el-menu>
+
+    <el-dialog
+      width="540px"
+      :show-close="false"
+      :center="true"
+      :visible.sync="addGroupDialogVisible"
+      :before-close="handleClose"
+    ></el-dialog>
   </div>
 </template>
 
@@ -36,6 +48,8 @@ import Group from '@/models/Group'
 export default class SideNav extends Vue {
   @State('currentView') private currentView: Route
   @State('joinedGroups') private groups: Group[]
+
+  private addGroupDialogVisible: boolean = false
 
   private get activedItem() {
     const { name, params } = this.currentView

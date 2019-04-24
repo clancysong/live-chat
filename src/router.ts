@@ -36,8 +36,8 @@ const router = new Router({
           ]
         },
         {
-          path: 'group/:id',
-          name: 'group',
+          path: 'groups/:id',
+          name: 'groups',
           component: () => import('./views/Groups.vue'),
           props: route => ({ id: parseInt(route.params.id, 10) })
         }
@@ -63,7 +63,7 @@ router.beforeEach(async (to, from, next) => {
     await store.dispatch('fetchPublicGroups')
   }
 
-  if (to.name === 'group') {
+  if (to.name === 'groups') {
     await store.dispatch('fetchGroupInfo', to.params.id)
     router.app.$socket.emit('GROUP_CONNECT', to.params.id)
   }

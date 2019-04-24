@@ -1,6 +1,6 @@
 import axios from '@/utils/axios'
 
-const URL = '/api/v1/group'
+const URL = '/api/v1/groups'
 
 export default {
   fetchPublicGroups: () => axios.get(`${URL}`),

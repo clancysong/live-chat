@@ -62,6 +62,7 @@ export default class HomeMenu extends Vue {
   .menu {
     border: none;
     margin-top: 16px;
+    font-weight: 500;
   }
 }
 </style>

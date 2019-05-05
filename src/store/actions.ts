@@ -1,7 +1,7 @@
 import { ActionTree } from 'vuex'
 import router from '@/router'
 import authService from '@/services/auth'
-import userService from '@/services/users'
+import selfService from '@/services/self'
 import groupService from '@/services/groups'
 import Group from '@/models/Group'
 import { State } from './index'
@@ -26,7 +26,7 @@ const actions: ActionTree<State, any> = {
   },
 
   async fetchUserInfo({ commit }) {
-    const rs = await userService.fetchUserInfo()
+    const rs = await selfService.fetchUserInfo()
 
     commit('setUser', rs.data)
   },
@@ -38,7 +38,7 @@ const actions: ActionTree<State, any> = {
   },
 
   async fetchJoinedGroups({ commit }) {
-    const rs = await userService.fetchJoinedGroups()
+    const rs = await selfService.fetchJoinedGroups()
 
     commit('setJoinedGroups', rs.data)
   },
@@ -51,7 +51,7 @@ const actions: ActionTree<State, any> = {
 
   async joinGroup({ state, commit }, group: Group) {
     if (state.user) {
-      const rs: any = await userService.joinGroup({ user_id: state.user.id, group_id: group.id })
+      const rs: any = await selfService.joinGroup({ user_id: state.user.id, group_id: group.id })
 
       if (rs.code === 100) commit('addGroup', group)
       router.push(`/groups/${group.id}`)

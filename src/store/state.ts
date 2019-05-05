@@ -3,5 +3,7 @@ export default {
   user: null,
   publicGroups: [],
   joinedGroups: [],
-  currentGroup: null
+  currentGroup: null,
+  friends: [],
+  friendRequests: []
 }

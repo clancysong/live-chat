@@ -65,6 +65,28 @@ const actions: ActionTree<State, any> = {
 
     commit('addGroup', group)
     router.push(`/groups/${group.id}`)
+  },
+
+  async fetchFriends({ state }) {
+    const { data: friends } = await selfService.fetchFriends()
+
+    state.friends = friends
+  },
+
+  async fetchFriendRequest({ state }) {
+    const { data: friendRequests } = await selfService.fetchFriendRequests()
+
+    state.friendRequests = friendRequests
+  },
+
+  async sendFriendRequest(request) {
+    await selfService.sendFriendRequest(request)
+  },
+
+  async handleFriendRequest(_, params) {
+    const { id, accept } = params
+
+    await selfService.handleFriendRequest(id, accept)
   }
 }
 

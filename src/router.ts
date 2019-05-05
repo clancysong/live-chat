@@ -63,6 +63,11 @@ router.beforeEach(async (to, from, next) => {
     await store.dispatch('fetchPublicGroups')
   }
 
+  if (to.name === 'friends') {
+    await store.dispatch('fetchFriends')
+    await store.dispatch('fetchFriendRequest')
+  }
+
   if (to.name === 'groups') {
     await store.dispatch('fetchGroupInfo', to.params.id)
     router.app.$socket.emit('GROUP_CONNECT', to.params.id)

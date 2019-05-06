@@ -7,17 +7,32 @@
       <el-button @click="changeTableState('FRIENDS_REQUESTS')">待审核</el-button>
       <el-button>添加好友</el-button>
     </header>
-    <el-table :data="tableData" style="width: 100%">
-      <el-table-column
-        :prop="tableState === 'FRIENDS_REQUESTS' ? 'requester_name' : 'name'"
-        label="名称"
-      ></el-table-column>
-      <el-table-column
-        :prop="tableState === 'FRIENDS_REQUESTS' ? 'requester_status' : 'status'"
-        label="状态"
-      ></el-table-column>
+
+    <el-table v-show="isFriendList" :data="tableData" style="width: 100%">
+      <el-table-column label="名称">
+        <template slot-scope="scope">{{ scope.row.name }}</template>
+      </el-table-column>
+      <el-table-column label="状态">
+        <template slot-scope="scope">{{ scope.row.status === 'online' ? '在线' : '离线' }}</template>
+      </el-table-column>
       <el-table-column>
-        <div class="actions" v-show="tableState === 'FRIENDS_REQUESTS'" slot-scope="scope">
+        <template class="actions" slot-scope="scope">
+          <el-button @click="removeFriend(scope.row.id)">
+            <font-awesome-icon :icon="['fas', 'user-times']" size="lg"/>
+          </el-button>
+        </template>
+      </el-table-column>
+    </el-table>
+
+    <el-table v-show="isFriendRequestList" :data="tableData" style="width: 100%">
+      <el-table-column label="名称">
+        <template slot-scope="scope">{{ scope.row.requester_name }}</template>
+      </el-table-column>
+      <el-table-column label="状态">
+        <template slot-scope="scope">{{ scope.row.requester_status === 'online' ? '在线' : '离线' }}</template>
+      </el-table-column>
+      <el-table-column>
+        <template class="actions" slot-scope="scope">
           <el-button @click="handleFriendRequest({ id: scope.row.id, accept: true })">
             <font-awesome-icon :icon="['fas', 'check']" size="lg"/>
           </el-button>
@@ -25,7 +40,7 @@
           <el-button @click="handleFriendRequest({ id: scope.row.id, accept: false })">
             <font-awesome-icon :icon="['fas', 'times']" size="lg"/>
           </el-button>
-        </div>
+        </template>
       </el-table-column>
     </el-table>
   </div>
@@ -43,6 +58,7 @@ export default class FriendList extends Vue {
   @State('friends') private friends: User[]
   @State('friendRequests') private friendRequests: FriendRequest[]
   @Action('handleFriendRequest') private handleFriendRequest: (params: { id: number; accept: boolean }) => void
+  @Action('removeFriend') private removeFriendAction: (id: number) => void
 
   private tableState = 'ONLINE_FRIENDS'
 
@@ -66,8 +82,22 @@ export default class FriendList extends Vue {
     }
   }
 
+  private get isFriendList() {
+    return this.tableState === 'ONLINE_FRIENDS' || this.tableState === 'ALL_FRIENDS'
+  }
+
+  private get isFriendRequestList() {
+    return this.tableState === 'FRIENDS_REQUESTS'
+  }
+
   private changeTableState(state: string) {
     this.tableState = state
+  }
+
+  private removeFriend(id: number) {
+    this.$confirm('您确定要将该好友从您的好友列表中永久移除吗？').then(() => {
+      this.removeFriendAction(id)
+    })
   }
 }
 </script>

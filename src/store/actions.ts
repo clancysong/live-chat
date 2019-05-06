@@ -73,6 +73,16 @@ const actions: ActionTree<State, any> = {
     state.friends = friends
   },
 
+  async removeFriend({ state }, id) {
+    const { code }: any = await selfService.removeFriend(id)
+
+    if (code === 100) {
+      const { friends } = state
+
+      friends.splice(friends.findIndex(i => i.id === id), 1)
+    }
+  },
+
   async fetchFriendRequest({ state }) {
     const { data: friendRequests } = await selfService.fetchFriendRequests()
 
@@ -80,17 +90,17 @@ const actions: ActionTree<State, any> = {
   },
 
   async sendFriendRequest(_, request) {
-    const rs = await selfService.sendFriendRequest(request)
-
-    return rs
+    return await selfService.sendFriendRequest(request)
   },
 
-  async handleFriendRequest(_, params) {
+  async handleFriendRequest({ state }, params) {
     const { id, accept } = params
+    const { code, data }: any = await selfService.handleFriendRequest(id, accept)
 
-    const rs = await selfService.handleFriendRequest(id, accept)
+    const { friendRequests } = state
 
-    return rs
+    friendRequests.splice(friendRequests.findIndex(i => i.id === id), 1)
+    if (accept && code === 100) state.friends.push(data)
   }
 }
 

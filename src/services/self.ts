@@ -11,6 +11,8 @@ export default {
 
   fetchFriends: () => axios.get(`${URL}/friends`),
 
+  removeFriend: (id: number) => axios.delete(`${URL}/friends/${id}`),
+
   fetchFriendRequests: () => axios.get(`${URL}/friend_requests`),
 
   sendFriendRequest: (data: {}) => axios.post(`${URL}/friend_requests`, data),

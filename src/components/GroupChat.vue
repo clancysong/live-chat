@@ -111,11 +111,13 @@ export default class GroupChat extends Vue {
 
     switch (type) {
       case 'ADD_FRIEND': {
-        const rs = await this.sendFriendRequest({ receiver_id: payload.userId })
+        this.$confirm('这将向对方发送好友请求，确定吗？').then(async () => {
+          const rs = await this.sendFriendRequest({ receiver_id: payload.userId })
 
-        if (rs.code === 100) this.$message.success('已发送好友请求')
-        else if (rs.code === 102) this.$message.warning('您已经发送过好友请求了，请等待对方审核')
-        else if (rs.code === 103) this.$message.warning('对方已经是您的好友了，无需重复添加')
+          if (rs.code === 100) this.$message.success('已发送好友请求')
+          else if (rs.code === 102) this.$message.warning('您已经发送过好友请求了，请等待对方审核')
+          else if (rs.code === 103) this.$message.warning('对方已经是您的好友了，无需重复添加')
+        })
 
         break
       }

@@ -31,10 +31,20 @@
 
           <ul class="members-list">
             <li v-for="member in onlineMembers" :key="member.id">
-              <div class="avatar">
-                <font-awesome-icon :icon="['fas', 'bomb']" size="lg"/>
-              </div>
-              <div class="name">{{ member.name }}</div>
+              <el-dropdown trigger="click" placement="bottom" @command="handleCommand">
+                <div>
+                  <div class="avatar">
+                    <font-awesome-icon :icon="['fas', 'bomb']" size="lg"/>
+                  </div>
+                  <div class="name">{{ member.name }}</div>
+                </div>
+
+                <el-dropdown-menu slot="dropdown">
+                  <el-dropdown-item
+                    :command="{ type: 'ADD_FRIEND', payload: { userId:member.id } }"
+                  >添加好友</el-dropdown-item>
+                </el-dropdown-menu>
+              </el-dropdown>
             </li>
           </ul>
 
@@ -42,10 +52,20 @@
 
           <ul class="members-list">
             <li v-for="member in offlineMembers" :key="member.id">
-              <div class="avatar">
-                <font-awesome-icon :icon="['fas', 'bomb']" size="lg"/>
-              </div>
-              <div class="name">{{ member.name }}</div>
+              <el-dropdown trigger="click" placement="bottom" @command="handleCommand">
+                <div>
+                  <div class="avatar">
+                    <font-awesome-icon :icon="['fas', 'bomb']" size="lg"/>
+                  </div>
+                  <div class="name">{{ member.name }}</div>
+                </div>
+
+                <el-dropdown-menu slot="dropdown">
+                  <el-dropdown-item
+                    :command="{ type: 'ADD_FRIEND', payload: { userId:member.id } }"
+                  >添加好友</el-dropdown-item>
+                </el-dropdown-menu>
+              </el-dropdown>
             </li>
           </ul>
         </div>
@@ -64,6 +84,8 @@ import Message from '@/models/Message'
 export default class GroupChat extends Vue {
   @Prop(Number) private readonly id: number
   @State('currentGroup') private currentGroup: Group
+  @Action('sendFriendRequest') private sendFriendRequest: (request: { receiver_id: number }) => any
+
   private inputValue = ''
 
   private get members() {
@@ -82,6 +104,26 @@ export default class GroupChat extends Vue {
   private submit() {
     this.$socket.emit('MESSAGE_SEND', this.inputValue)
     this.inputValue = ''
+  }
+
+  private async handleCommand(command: any) {
+    const { type, payload } = command
+
+    switch (type) {
+      case 'ADD_FRIEND': {
+        const rs = await this.sendFriendRequest({ receiver_id: payload.userId })
+
+        if (rs.code === 100) this.$message.success('已发送好友请求')
+        else if (rs.code === 102) this.$message.warning('您已经发送过好友请求了，请等待对方审核')
+        else if (rs.code === 103) this.$message.warning('对方已经是您的好友了，无需重复添加')
+
+        break
+      }
+
+      default: {
+        break
+      }
+    }
   }
 }
 </script>
@@ -198,25 +240,33 @@ export default class GroupChat extends Vue {
         padding: 0;
 
         > li {
-          padding: 8px;
-          display: flex;
-          align-items: center;
+          cursor: pointer;
+          text-align: start;
 
-          .avatar {
-            width: 30px;
-            height: 30px;
-            line-height: 30px;
-            border-radius: 100%;
-            background: #f04747;
-            color: #ffffff;
-            font-size: 12px;
-          }
+          .el-dropdown {
+            .el-dropdown-selfdefine {
+              padding: 8px;
+              display: flex;
+              align-items: center;
 
-          .name {
-            color: #72767d;
-            font-size: 16px;
-            font-weight: 500;
-            margin: 0 8px;
+              .avatar {
+                width: 30px;
+                height: 30px;
+                line-height: 30px;
+                border-radius: 100%;
+                background: #f04747;
+                color: #ffffff;
+                font-size: 12px;
+                text-align: center;
+              }
+
+              .name {
+                color: #72767d;
+                font-size: 16px;
+                font-weight: 500;
+                margin: 0 8px;
+              }
+            }
           }
         }
       }

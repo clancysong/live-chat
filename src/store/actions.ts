@@ -79,14 +79,18 @@ const actions: ActionTree<State, any> = {
     state.friendRequests = friendRequests
   },
 
-  async sendFriendRequest(request) {
-    await selfService.sendFriendRequest(request)
+  async sendFriendRequest(_, request) {
+    const rs = await selfService.sendFriendRequest(request)
+
+    return rs
   },
 
   async handleFriendRequest(_, params) {
     const { id, accept } = params
 
-    await selfService.handleFriendRequest(id, accept)
+    const rs = await selfService.handleFriendRequest(id, accept)
+
+    return rs
   }
 }
 

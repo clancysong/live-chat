@@ -17,12 +17,12 @@
         label="状态"
       ></el-table-column>
       <el-table-column>
-        <div class="actions" v-show="tableState === 'FRIENDS_REQUESTS'" prop="actions">
-          <el-button>
+        <div class="actions" v-show="tableState === 'FRIENDS_REQUESTS'" slot-scope="scope">
+          <el-button @click="handleFriendRequest({ id: scope.row.id, accept: true })">
             <font-awesome-icon :icon="['fas', 'check']" size="lg"/>
           </el-button>
 
-          <el-button>
+          <el-button @click="handleFriendRequest({ id: scope.row.id, accept: false })">
             <font-awesome-icon :icon="['fas', 'times']" size="lg"/>
           </el-button>
         </div>
@@ -42,6 +42,7 @@ import FriendRequest from '@/models/FriendRequest'
 export default class FriendList extends Vue {
   @State('friends') private friends: User[]
   @State('friendRequests') private friendRequests: FriendRequest[]
+  @Action('handleFriendRequest') private handleFriendRequest: (params: { id: number; accept: boolean }) => void
 
   private tableState = 'ONLINE_FRIENDS'
 

@@ -44,7 +44,7 @@ export default class PublicGroups extends Vue {
   private async joinGroup(group: Group) {
     await this.joinGroupAction(group)
 
-    this.$router.push(`/groups/${group.id}`)
+    this.$router.push(`/groups/${group.uuid}`)
   }
 }
 </script>

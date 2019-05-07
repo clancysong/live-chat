@@ -23,6 +23,16 @@
         <font-awesome-icon :icon="['fas', 'burn']" size="lg"/>
         <span slot="title">个人信息</span>
       </el-menu-item>
+
+      <el-menu-item
+        v-for="chat in privateChats"
+        :key="chat.uuid"
+        :index="chat.uuid"
+        :route="`/@me/${chat.uuid}`"
+      >
+        <font-awesome-icon :icon="['fas', 'burn']" size="lg"/>
+        <span slot="title">{{ chat.userb_name }}</span>
+      </el-menu-item>
     </el-menu>
   </div>
 </template>
@@ -35,6 +45,7 @@ import { Route } from 'vue-router'
 @Component
 export default class HomeMenu extends Vue {
   @State('currentView') private currentView: Route
+  @State('privateChats') private privateChats: []
 
   private get activedItem() {
     const { name, params } = this.currentView
@@ -46,7 +57,7 @@ export default class HomeMenu extends Vue {
 
 <style lang="scss">
 .home-menu {
-  background: #2F3135;
+  background: #2f3135;
   flex: 0 0 240px;
   height: 100%;
 

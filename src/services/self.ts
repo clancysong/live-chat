@@ -17,5 +17,9 @@ export default {
 
   sendFriendRequest: (data: {}) => axios.post(`${URL}/friend_requests`, data),
 
-  handleFriendRequest: (id: number, accept: boolean) => axios.delete(`${URL}/friend_requests/${id}?accept=${accept}`)
+  handleFriendRequest: (id: number, accept: boolean) => axios.delete(`${URL}/friend_requests/${id}?accept=${accept}`),
+
+  createPrivateChat: (data: {}) => axios.post(`${URL}/private_chats`, data),
+
+  fetchPrivateChatInfo: (id: number) => axios.get(`${URL}/private_chats/${id}`)
 }

@@ -4,6 +4,8 @@ export default {
   publicGroups: [],
   joinedGroups: [],
   currentGroup: null,
+  privateChats: [],
+  currentPrivateChat: null,
   friends: [],
   friendRequests: []
 }

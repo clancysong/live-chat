@@ -62,8 +62,11 @@
 
                 <el-dropdown-menu slot="dropdown">
                   <el-dropdown-item
-                    :command="{ type: 'ADD_FRIEND', payload: { userId:member.id } }"
+                    :command="{ type: 'ADD_FRIEND', payload: { userId: member.id } }"
                   >添加好友</el-dropdown-item>
+                  <el-dropdown-item
+                    :command="{ type: 'PRIVATE_CHAT', payload: { userId: member.id } }"
+                  >私信</el-dropdown-item>
                 </el-dropdown-menu>
               </el-dropdown>
             </li>
@@ -85,6 +88,7 @@ export default class GroupChat extends Vue {
   @Prop(Number) private readonly id: number
   @State('currentGroup') private currentGroup: Group
   @Action('sendFriendRequest') private sendFriendRequest: (request: { receiver_id: number }) => any
+  @Action('createPrivateChat') private createPrivateChat: (data: { receiver_id: number }) => any
 
   private inputValue = ''
 
@@ -102,8 +106,10 @@ export default class GroupChat extends Vue {
   }
 
   private submit() {
-    this.$socket.emit('MESSAGE_SEND', this.inputValue)
-    this.inputValue = ''
+    if (this.inputValue) {
+      this.$socket.emit('MESSAGE_SEND', this.inputValue)
+      this.inputValue = ''
+    }
   }
 
   private async handleCommand(command: any) {
@@ -112,13 +118,19 @@ export default class GroupChat extends Vue {
     switch (type) {
       case 'ADD_FRIEND': {
         this.$confirm('这将向对方发送好友请求，确定吗？').then(async () => {
-          const rs = await this.sendFriendRequest({ receiver_id: payload.userId })
+          const { code } = await this.sendFriendRequest({ receiver_id: payload.userId })
 
-          if (rs.code === 100) this.$message.success('已发送好友请求')
-          else if (rs.code === 102) this.$message.warning('您已经发送过好友请求了，请等待对方审核')
-          else if (rs.code === 103) this.$message.warning('对方已经是您的好友了，无需重复添加')
+          if (code === 100) this.$message.success('已发送好友请求')
+          else if (code === 102) this.$message.warning('您已经发送过好友请求了，请等待对方审核')
+          else if (code === 103) this.$message.warning('对方已经是您的好友了，无需重复添加')
         })
 
+        break
+      }
+
+      case 'PRIVATE_CHAT': {
+        const { data } = await this.createPrivateChat({ receiver_id: payload.userId })
+        this.$router.push({ path: `/@me/${data.id}` })
         break
       }
 

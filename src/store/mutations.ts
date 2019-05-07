@@ -27,7 +27,21 @@ const mutations: MutationTree<State> = {
   },
 
   SOCKET_MESSAGE_RECEIVE(state, message) {
-    if (state.currentGroup) state.currentGroup.messages.push(message)
+    switch (message.chat_type) {
+      case 'group': {
+        if (state.currentGroup) state.currentGroup.messages.push(message)
+        break
+      }
+
+      case 'private_chat': {
+        if (state.currentPrivateChat) state.currentPrivateChat.messages.push(message)
+        break
+      }
+
+      default: {
+        break
+      }
+    }
   }
 }
 

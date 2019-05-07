@@ -101,6 +101,16 @@ const actions: ActionTree<State, any> = {
 
     friendRequests.splice(friendRequests.findIndex(i => i.id === id), 1)
     if (accept && code === 100) state.friends.push(data)
+  },
+
+  async createPrivateChat({ state }, data) {
+    return await selfService.createPrivateChat(data)
+  },
+
+  async fetchPrivateChatInfo({ state }, id) {
+    const { data } = await selfService.fetchPrivateChatInfo(id)
+
+    state.currentPrivateChat = data
   }
 }
 

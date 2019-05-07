@@ -21,6 +21,8 @@ export interface State {
   publicGroups: Group[]
   joinedGroups: Group[]
   currentGroup: Group | null
+  privateChats: any
+  currentPrivateChat: any
   friends: User[]
   friendRequests: FriendRequest[]
 }

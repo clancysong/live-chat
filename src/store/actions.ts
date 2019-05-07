@@ -107,8 +107,14 @@ const actions: ActionTree<State, any> = {
     return await selfService.createPrivateChat(data)
   },
 
-  async fetchPrivateChatInfo({ state }, id) {
-    const { data } = await selfService.fetchPrivateChatInfo(id)
+  async fetchPrivateChats({ state }) {
+    const { data } = await selfService.fetchPrivateChats()
+
+    state.privateChats = data
+  },
+
+  async fetchPrivateChatInfo({ state }, uuid) {
+    const { data } = await selfService.fetchPrivateChatInfo(uuid)
 
     state.currentPrivateChat = data
   }

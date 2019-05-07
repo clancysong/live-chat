@@ -21,5 +21,7 @@ export default {
 
   createPrivateChat: (data: {}) => axios.post(`${URL}/private_chats`, data),
 
-  fetchPrivateChatInfo: (id: number) => axios.get(`${URL}/private_chats/${id}`)
+  fetchPrivateChats: () => axios.get(`${URL}/private_chats`),
+
+  fetchPrivateChatInfo: (uuid: string) => axios.get(`${URL}/private_chats/${uuid}`)
 }

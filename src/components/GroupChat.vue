@@ -130,7 +130,7 @@ export default class GroupChat extends Vue {
 
       case 'PRIVATE_CHAT': {
         const { data } = await this.createPrivateChat({ receiver_id: payload.userId })
-        this.$router.push({ path: `/@me/${data.id}` })
+        this.$router.push({ path: `/@me/${data.uuid}` })
         break
       }
 

@@ -34,7 +34,7 @@ const router = new Router({
               component: () => import('./views/Profile.vue')
             },
             {
-              path: '@me/:id',
+              path: '@me/:uuid',
               name: '@me',
               component: () => import('./views/@me.vue'),
               props: route => ({ id: parseInt(route.params.id, 10) })
@@ -42,10 +42,10 @@ const router = new Router({
           ]
         },
         {
-          path: 'groups/:id',
+          path: 'groups/:uuid',
           name: 'groups',
           component: () => import('./views/Groups.vue'),
-          props: route => ({ id: parseInt(route.params.id, 10) })
+          // props: route => ({ uuid: route.params.uuid })
         }
       ]
     },
@@ -58,11 +58,15 @@ const router = new Router({
 })
 
 router.beforeEach(async (to, from, next) => {
+  console.log(to)
   if (to.name !== 'login') {
     if (!store.state.user) {
       await store.dispatch('fetchUserInfo')
     }
-    await store.dispatch('fetchJoinedGroups')
+
+    if (store.state.joinedGroups.length === 0) {
+      await store.dispatch('fetchJoinedGroups')
+    }
   }
 
   if (to.name === 'community') {
@@ -75,13 +79,17 @@ router.beforeEach(async (to, from, next) => {
   }
 
   if (to.name === 'groups') {
-    await store.dispatch('fetchGroupInfo', to.params.id)
-    router.app.$socket.emit('CHAT_CONNECT', { chatType: 'group', chatId: to.params.id })
+    await store.dispatch('fetchGroupInfo', to.params.uuid)
+    router.app.$socket.emit('CHAT_CONNECT', { chatType: 'group', chatUuid: to.params.uuid })
+  }
+
+  if (to.matched[1] && to.matched[1].path === '/' && store.state.privateChats.length === 0) {
+    await store.dispatch('fetchPrivateChats')
   }
 
   if (to.name === '@me') {
-    await store.dispatch('fetchPrivateChatInfo', to.params.id)
-    router.app.$socket.emit('CHAT_CONNECT', { chatType: 'private_chat', chatId: to.params.id })
+    await store.dispatch('fetchPrivateChatInfo', to.params.uuid)
+    router.app.$socket.emit('CHAT_CONNECT', { chatType: 'private_chat', chatUuid: to.params.uuid })
   }
 
   store.commit('setCurrentView', to)

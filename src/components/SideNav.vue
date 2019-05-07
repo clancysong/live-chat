@@ -8,16 +8,16 @@
       :collapse="true"
       :router="true"
     >
-      <el-menu-item index="home" route="/">
+      <el-menu-item index="home" route="/community">
         <font-awesome-icon :icon="['fas', 'burn']" size="lg"/>
         <span slot="title">home</span>
       </el-menu-item>
 
       <el-menu-item
         v-for="group in groups"
-        :key="group.id"
-        :index="`groups-${group.id}`"
-        :route="`/groups/${group.id}`"
+        :key="group.uuid"
+        :index="`groups-${group.uuid}`"
+        :route="`/groups/${group.uuid}`"
       >
         <font-awesome-icon :icon="['fas', 'circle']" size="lg"/>
         <span slot="title">{{ group.name }}</span>
@@ -56,7 +56,7 @@ export default class SideNav extends Vue {
   private get activedItem() {
     const { name, params } = this.currentView
 
-    return `${name}-${params.id ? params.id : ''}`
+    return `${name}-${params.uuid ? params.uuid : ''}`
   }
 }
 </script>

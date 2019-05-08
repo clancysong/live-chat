@@ -1,7 +1,7 @@
 <template>
   <div class="channels">
     <div class="title-bar">
-      <h4>{{ userState.name }}</h4>
+      <h4>{{ currentGroup.name }}</h4>
       <el-dropdown trigger="click" @command="handleCommand">
         <span class="el-dropdown-link">
           <font-awesome-icon :icon="['fas', 'angle-down']" size="lg"/>
@@ -24,13 +24,15 @@
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator'
 import { State } from 'vuex-class'
+import Group from '@/models/Group'
 
 @Component
 export default class Channels extends Vue {
   @State('user') private userState: {}
+  @State('currentGroup') private currentGroup: Group
 
   private handleCommand(command: string) {
-    switch(command) {
+    switch (command) {
       case 'invite': {
         const code = this.generateInvitationCode()
       }

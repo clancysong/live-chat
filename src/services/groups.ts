@@ -5,7 +5,7 @@ const URL = '/api/v1/groups'
 export default {
   fetchPublicGroups: () => axios.get(URL),
 
-  fetchGroupInfo: (id: number) => axios.get(`${URL}/${id}`),
+  fetchGroupInfo: (uuid: string) => axios.get(`${URL}/${uuid}`),
 
   createGroup: (data: {}) => axios.post(URL, data),
 }

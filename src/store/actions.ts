@@ -43,8 +43,8 @@ const actions: ActionTree<State, any> = {
     commit('setJoinedGroups', rs.data)
   },
 
-  async fetchGroupInfo({ commit }, id: number) {
-    const rs = await groupService.fetchGroupInfo(id)
+  async fetchGroupInfo({ commit }, uuid: string) {
+    const rs = await groupService.fetchGroupInfo(uuid)
 
     commit('setCurrentGroup', rs.data)
   },
@@ -103,8 +103,14 @@ const actions: ActionTree<State, any> = {
     if (accept && code === 100) state.friends.push(data)
   },
 
-  async createPrivateChat({ state }, data) {
-    return await selfService.createPrivateChat(data)
+  async createPrivateChat({ state }, chat) {
+    const { data } = await selfService.createPrivateChat(chat)
+
+    if (!state.privateChats.find((c: any) => c.uuid === data.uuid)) {
+      state.privateChats.push(data)
+    }
+
+    return { data }
   },
 
   async fetchPrivateChats({ state }) {

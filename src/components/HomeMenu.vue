@@ -27,7 +27,7 @@
       <el-menu-item
         v-for="chat in privateChats"
         :key="chat.uuid"
-        :index="chat.uuid"
+        :index="`@me-${chat.uuid}`"
         :route="`/@me/${chat.uuid}`"
       >
         <font-awesome-icon :icon="['fas', 'burn']" size="lg"/>
@@ -50,7 +50,7 @@ export default class HomeMenu extends Vue {
   private get activedItem() {
     const { name, params } = this.currentView
 
-    return `${name}${params.id ? params.id : ''}`
+    return `${name}${params.uuid ? `-${params.uuid}` : ''}`
   }
 }
 </script>

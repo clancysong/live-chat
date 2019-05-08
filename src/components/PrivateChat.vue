@@ -1,6 +1,6 @@
 <template>
   <div class="private-chat">
-    <div class="title-bar"></div>
+    <div class="title-bar"><h3>{{ currentPrivateChat.userb_name }}</h3></div>
 
     <div class="content">
       <div class="chat-frame">

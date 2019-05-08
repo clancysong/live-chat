@@ -14,6 +14,8 @@ const actions: ActionTree<State, any> = {
       commit('setUser', rs.data)
       router.push({ path: '/' })
     }
+
+    return rs
   },
 
   async register({ commit }, data: {}) {
@@ -23,12 +25,16 @@ const actions: ActionTree<State, any> = {
       commit('setUser', rs.data)
       router.push({ path: '/' })
     }
+
+    return rs
   },
 
   async fetchUserInfo({ commit }) {
     const rs = await selfService.fetchUserInfo()
 
     commit('setUser', rs.data)
+
+    return rs
   },
 
   async fetchPublicGroups({ commit }) {

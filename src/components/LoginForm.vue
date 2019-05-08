@@ -45,14 +45,11 @@ import { ElForm } from 'element-ui/types/form'
 
 @Component
 export default class LoginForm extends Vue {
-  @Action('login') private loginAction: (data: {}) => void
+  @Action('login') private loginAction: (data: {}) => any
 
   private formData = { email: '', password: '' }
   private rules = {
-    email: [
-      { required: true, message: '请输入你的邮箱' },
-      { type: 'email', message: '不是一个合法的邮箱' }
-    ],
+    email: [{ required: true, message: '请输入你的邮箱' }, { type: 'email', message: '不是一个合法的邮箱' }],
     password: [{ required: true, message: '密码不能为空' }]
   }
 
@@ -61,8 +58,12 @@ export default class LoginForm extends Vue {
   }
 
   private submit() {
-    this.form.validate(valid => {
-      if (valid) this.loginAction(this.formData)
+    this.form.validate(async valid => {
+      if (valid) {
+        const { code, data } = await this.loginAction(this.formData)
+
+        if (code === 100) this.$socket.emit('COME_ONLINE', data.id)
+      }
     })
   }
 }

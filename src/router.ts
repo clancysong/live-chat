@@ -36,14 +36,14 @@ const router = new Router({
             {
               path: '@me/:uuid',
               name: '@me',
-              component: () => import('./views/@me.vue'),
+              component: () => import('./views/@me.vue')
             }
           ]
         },
         {
           path: 'groups/:uuid',
           name: 'groups',
-          component: () => import('./views/Groups.vue'),
+          component: () => import('./views/Groups.vue')
         }
       ]
     },
@@ -58,7 +58,9 @@ const router = new Router({
 router.beforeEach(async (to, from, next) => {
   if (to.name !== 'login') {
     if (!store.state.user) {
-      await store.dispatch('fetchUserInfo')
+      const { code, data } = await store.dispatch('fetchUserInfo')
+
+      if (code === 100) router.app.$socket.emit('COME_ONLINE', data.id)
     }
 
     if (store.state.joinedGroups.length === 0) {

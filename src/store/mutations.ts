@@ -26,6 +26,22 @@ const mutations: MutationTree<State> = {
     state.joinedGroups.push(group)
   },
 
+  SOCKET_USER_COME_ONLINE(state, user) {
+    if (state.currentGroup) {
+      const member = state.currentGroup.members.find(m => m.id === user.id)
+
+      if (member) member.status = 'online'
+    }
+  },
+
+  SOCKET_USER_COME_OFFLINE(state, user) {
+    if (state.currentGroup) {
+      const member = state.currentGroup.members.find(m => m.id === user.id)
+
+      if (member) member.status = 'offline'
+    }
+  },
+
   SOCKET_MESSAGE_RECEIVE(state, message) {
     switch (message.chat_type) {
       case 'group': {

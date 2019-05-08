@@ -48,22 +48,13 @@ import axios from 'axios'
 
 @Component
 export default class RegisterForm extends Vue {
-  @Action('register') private registerAction: (data: {}) => void
+  @Action('register') private registerAction: (data: {}) => any
 
   private formData = { name: '', email: '', password: '' }
   private rules = {
-    name: [
-      { required: true, message: '请输入你的用户名' },
-      { max: 10, message: '用户名不能超过10个字符' }
-    ],
-    email: [
-      { required: true, message: '请输入你的邮箱' },
-      { type: 'email', message: '不是一个合法的邮箱' }
-    ],
-    password: [
-      { required: true, message: '请输入你的密码' },
-      { min: 6, max: 15, message: '密码长度必须在6到15位之间' }
-    ]
+    name: [{ required: true, message: '请输入你的用户名' }, { max: 10, message: '用户名不能超过10个字符' }],
+    email: [{ required: true, message: '请输入你的邮箱' }, { type: 'email', message: '不是一个合法的邮箱' }],
+    password: [{ required: true, message: '请输入你的密码' }, { min: 6, max: 15, message: '密码长度必须在6到15位之间' }]
   }
 
   get form() {
@@ -72,7 +63,11 @@ export default class RegisterForm extends Vue {
 
   private submit() {
     this.form.validate(async valid => {
-      if (valid) this.registerAction(this.formData)
+      if (valid) {
+        const { code, data } = await this.registerAction(this.formData)
+
+        if (code === 100) this.$socket.emit('COME_ONLINE', data.id)
+      }
     })
   }
 }

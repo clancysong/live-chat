@@ -18,6 +18,48 @@
         </el-dropdown-menu>
       </el-dropdown>
     </div>
+
+    <div class="channel-list">
+      <h3>频道</h3>
+
+      <ul>
+        <li class="channel">
+          <div class="inner">
+            <div class="name">
+              <font-awesome-icon :icon="['fab', 'slack-hash']" size="lg"/>
+              <span>general</span>
+            </div>
+
+            <div class="btns">
+              <div class="btn">
+                <font-awesome-icon :icon="['fas', 'user-plus']" size="lg"/>
+              </div>
+              <div class="btn">
+                <font-awesome-icon :icon="['fas', 'cog']" size="lg"/>
+              </div>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+
+    <footer class="footer">
+      <div class="user-info">
+        <div class="avatar">
+          <font-awesome-icon :icon="['fas', 'bomb']" size="lg"/>
+        </div>
+        <div class="info">
+          <div class="name">cicec</div>
+          <div class="code">#4241</div>
+        </div>
+      </div>
+
+      <div class="btns">
+        <div class="btn">
+          <font-awesome-icon :icon="['fas', 'cog']" size="lg"/>
+        </div>
+      </div>
+    </footer>
   </div>
 </template>
 
@@ -50,6 +92,8 @@ export default class Channels extends Vue {
   background: #2f3135;
   flex: 0 0 240px;
   height: 100%;
+  display: flex;
+  flex-direction: column;
 
   > .title-bar {
     height: 48px;
@@ -66,6 +110,110 @@ export default class Channels extends Vue {
 
     .el-dropdown-link {
       cursor: pointer;
+    }
+  }
+
+  > .channel-list {
+    flex: auto;
+
+    > h3 {
+      font-size: 13px;
+      line-height: 16px;
+      font-weight: 600;
+      color: #8e9297;
+      margin: 20px 0 20px 20px;
+      text-align: start;
+    }
+
+    > ul {
+      list-style: none;
+      padding: 0;
+
+      > li {
+        .inner {
+          height: 40px;
+          line-height: 40px;
+          padding: 0 8px;
+          margin: 1px 8px;
+          border-radius: 4px;
+          display: flex;
+          justify-content: space-between;
+          background-color: #40444b;
+          color: #ffffff;
+
+          .name {
+            font-size: 16px;
+            font-weight: 600;
+
+            svg {
+              color: #72767d;
+              margin-right: 8px;
+            }
+          }
+
+          .btns {
+            display: flex;
+
+            .btn {
+              margin: 0 4px;
+
+              svg {
+                color: #b9bbbe;
+                width: 16px;
+                height: 16px;
+                cursor: pointer;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  > .footer {
+    background: rgba(32, 34, 37, 0.3);
+    height: 52px;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 400;
+    padding: 0 10px;
+    margin-bottom: 1px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .user-info {
+      display: flex;
+      align-items: center;
+
+      .avatar {
+        width: 30px;
+        height: 30px;
+        line-height: 30px;
+        border-radius: 100%;
+        background: #f04747;
+        color: #ffffff;
+        font-size: 12px;
+        text-align: center;
+      }
+
+      .name {
+        font-size: 14px;
+        font-weight: 500;
+        margin: 0 8px;
+      }
+
+      .code {
+        color: #72767d;
+        font-size: 12px;
+      }
+    }
+
+    .btns {
+      .btn {
+        color: #b9bbbe;
+        cursor: pointer;
+      }
     }
   }
 }

@@ -1,6 +1,20 @@
 <template>
   <div class="chat-frame">
-    <div class="title-bar"></div>
+    <div class="title-bar">
+      <div class="channel-name">
+        <font-awesome-icon :icon="['fab', 'slack-hash']" size="lg"/>
+        <span>general</span>
+      </div>
+
+      <div class="btns">
+        <div class="btn">
+          <font-awesome-icon :icon="['fas', 'users']" size="lg"/>
+        </div>
+        <div class="btn">
+          <font-awesome-icon :icon="['fas', 'question-circle']" size="lg"/>
+        </div>
+      </div>
+    </div>
 
     <div class="content">
       <div class="chat-frame">
@@ -21,8 +35,13 @@
           </ul>
         </div>
 
-        <el-input v-model="inputValue"/>
-        <el-button @click="submit">发送</el-button>
+        <el-form class="chat-form">
+          <el-input v-model="inputValue" placeholder="输入文字以发送消息">
+            <el-button slot="append" @click="submit">
+              <font-awesome-icon :icon="['fas', 'paper-plane']" size="lg"/>
+            </el-button>
+          </el-input>
+        </el-form>
       </div>
 
       <div class="members">
@@ -152,10 +171,36 @@ export default class GroupChat extends Vue {
     box-shadow: 0 1px 0 #dcddde, 0 2px 0 rgba(236, 238, 239, 0.25);
     color: #4f545c;
     background: #fff;
+    padding: 0 20px;
     position: absolute;
     top: 0;
     width: 100%;
     z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .channel-name {
+      height: 40px;
+      line-height: 40px;
+      font-size: 16px;
+      font-weight: 600;
+      text-align: start;
+
+      svg {
+        color: #72767d;
+        margin-right: 8px;
+      }
+    }
+
+    .btns {
+      display: flex;
+
+      .btn {
+        margin: 0 8px;
+        cursor: pointer;
+      }
+    }
   }
 
   > .content {
@@ -168,9 +213,13 @@ export default class GroupChat extends Vue {
       display: flex;
       flex-direction: column;
 
+      .messages::-webkit-scrollbar {
+        display: none;
+      }
+
       .messages {
         flex: 1;
-        overflow: scroll;
+        overflow-y: scroll;
         direction: ltr;
 
         .messages-list {
@@ -230,6 +279,31 @@ export default class GroupChat extends Vue {
 
       .chat-form {
         height: 95px;
+        margin: 0 20px;
+        padding: 20px 0 30px;
+        border-top: 1px solid rgba(0, 0, 0, 0.14);
+
+        .el-input {
+          input {
+            height: 45px;
+            background-color: #f6f6f7;
+            border: none;
+            padding: 0 20px;
+          }
+
+          .el-input-group__append {
+            border: none;
+          }
+
+          button {
+            border: none;
+            outline: none;
+          }
+        }
+
+        input::placeholder {
+          font-weight: 600;
+        }
       }
     }
 

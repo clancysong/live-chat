@@ -9,9 +9,15 @@
       :router="true"
     >
       <el-menu-item index="home" route="/community">
-        <font-awesome-icon :icon="['fas', 'burn']" size="lg"/>
+        <div class="avatar">
+          <div class="inner">
+            <font-awesome-icon :icon="['fas', 'bomb']" size="lg"/>
+          </div>
+        </div>
         <span slot="title">home</span>
       </el-menu-item>
+
+      <el-divider></el-divider>
 
       <el-menu-item
         v-for="group in groups"
@@ -19,13 +25,15 @@
         :index="`groups-${group.uuid}`"
         :route="`/groups/${group.uuid}`"
       >
-        <font-awesome-icon :icon="['fas', 'circle']" size="lg"/>
+        <div class="avatar">
+          <div class="inner">{{ group.name.slice(0, 1) }}</div>
+        </div>
         <span slot="title">{{ group.name }}</span>
       </el-menu-item>
 
-      <el-button @click="addGroupDialogVisible =  true">
+      <div class="add-group-btn" @click="addGroupDialogVisible =  true">
         <font-awesome-icon :icon="['fas', 'plus']" size="lg"/>
-      </el-button>
+      </div>
     </el-menu>
 
     <el-dialog
@@ -71,9 +79,85 @@ export default class SideNav extends Vue {
     width: $side-nav-width;
     height: 100%;
     border: none;
+    padding: 8px 0;
 
     .el-menu-item {
       font-size: 20px;
+      height: 60px;
+
+      .el-tooltip {
+        padding: 0 !important;
+      }
+
+      .avatar {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+
+        .inner {
+          font-weight: 900;
+          width: 48px;
+          height: 48px;
+          line-height: 48px;
+          border-radius: 50%;
+          color: #b9bbbe;
+          background-color: #2f3136;
+          font-size: 18px;
+        }
+      }
+
+      .avatar:hover {
+        .inner {
+          color: #fff;
+          background-color: #7289da;
+          border-radius: 26%;
+          transition: all 0.15s ease-out, color 0.15s ease-out;
+        }
+      }
+    }
+
+    .el-menu-item.is-active {
+      .avatar {
+        .inner {
+          color: #fff;
+          background-color: #7289da;
+          border-radius: 26%;
+          transition: all 0.15s ease-out, color 0.15s ease-out;
+        }
+      }
+    }
+
+    .el-divider {
+      width: 32px;
+      height: 2px;
+      margin: 12px auto;
+      border-radius: 1px;
+      background: #2f3136;
+    }
+
+    .add-group-btn {
+      background: transparent;
+      border: none;
+      outline: none;
+      font-weight: 500;
+      width: 48px;
+      height: 48px;
+      line-height: 48px;
+      border-radius: 50%;
+      color: #b9bbbe;
+      background-color: #2f3136;
+      color: #43b581;
+      font-size: 18px;
+      margin: 6px auto;
+    }
+
+    .add-group-btn:hover {
+      cursor: pointer;
+      color: #fff;
+      background-color: #43b581;
+      border-radius: 26%;
+      transition: all 0.15s ease-out, color 0.15s ease-out;
     }
   }
 }

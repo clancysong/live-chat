@@ -9,17 +9,17 @@
       text-color="#fff"
       :router="true"
     >
-      <el-menu-item index="community" route="/community">
+      <el-menu-item index="community" route="/home/community">
         <font-awesome-icon :icon="['fas', 'burn']" size="lg"/>
         <span slot="title">社区</span>
       </el-menu-item>
 
-      <el-menu-item index="friends" route="/friends">
+      <el-menu-item index="friends" route="/home/friends">
         <font-awesome-icon :icon="['fas', 'burn']" size="lg"/>
         <span slot="title">好友</span>
       </el-menu-item>
 
-      <el-menu-item index="profile" route="/profile">
+      <el-menu-item index="profile" route="/home/profile">
         <font-awesome-icon :icon="['fas', 'burn']" size="lg"/>
         <span slot="title">个人信息</span>
       </el-menu-item>

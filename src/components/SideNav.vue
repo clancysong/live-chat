@@ -8,7 +8,7 @@
       :collapse="true"
       :router="true"
     >
-      <el-menu-item index="home" route="/community">
+      <el-menu-item index="home" route="/home">
         <div class="avatar">
           <div class="inner">
             <font-awesome-icon :icon="['fas', 'bomb']" size="lg"/>
@@ -64,7 +64,11 @@ export default class SideNav extends Vue {
   private get activedItem() {
     const { name, params } = this.currentView
 
-    return `${name}-${params.uuid ? params.uuid : ''}`
+    if (params.uuid) {
+      return `${name}-${params.uuid}`
+    } else {
+      return 'home'
+    }
   }
 }
 </script>

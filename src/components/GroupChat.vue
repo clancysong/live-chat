@@ -60,8 +60,11 @@
 
                 <el-dropdown-menu slot="dropdown">
                   <el-dropdown-item
-                    :command="{ type: 'ADD_FRIEND', payload: { userId:member.id } }"
+                    :command="{ type: 'ADD_FRIEND', payload: { userId: member.id } }"
                   >添加好友</el-dropdown-item>
+                  <el-dropdown-item
+                    :command="{ type: 'PRIVATE_CHAT', payload: { userId: member.id } }"
+                  >私信</el-dropdown-item>
                 </el-dropdown-menu>
               </el-dropdown>
             </li>

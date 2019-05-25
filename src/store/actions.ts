@@ -60,7 +60,7 @@ const actions: ActionTree<State, any> = {
       const rs: any = await selfService.joinGroup({ user_id: state.user.id, group_id: group.id })
 
       if (rs.code === 100) commit('addGroup', group)
-      router.push(`/groups/${group.id}`)
+      router.push(`/groups/${group.uuid}`)
 
       return rs
     }
@@ -70,7 +70,7 @@ const actions: ActionTree<State, any> = {
     const { data: group } = await groupService.createGroup(data)
 
     commit('addGroup', group)
-    router.push(`/groups/${group.id}`)
+    router.push(`/groups/${group.uuid}`)
   },
 
   async fetchFriends({ state }) {

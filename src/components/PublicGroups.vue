@@ -3,7 +3,7 @@
     <div class="groups">
       <el-row>
         <el-col v-for="group in groups" :key="group.id" :span="8">
-          <div class="card" @click="joinGroup(group)">
+          <div class="card">
             <div class="bg">
               <img
                 class="cover"
@@ -23,6 +23,10 @@
                   1024人在线
                 </div>
               </div>
+            </div>
+
+            <div class="btn-wrapper">
+              <el-button @click="joinGroup(group)">加入</el-button>
             </div>
           </div>
         </el-col>
@@ -58,7 +62,6 @@ export default class PublicGroups extends Vue {
     .card {
       margin: 8px;
       border-radius: 5px;
-      cursor: pointer;
       display: flex;
       flex-direction: column;
       height: 100%;
@@ -145,6 +148,20 @@ export default class PublicGroups extends Vue {
 
       .fade {
         opacity: 0.8;
+      }
+    }
+
+    .btn-wrapper {
+      position: absolute;
+      bottom: 20px;
+      right: 16px;
+
+      button {
+        cursor: pointer;
+        border: none;
+        background: #43b581;
+        color: #ffffff;
+        font-weight: 600;
       }
     }
   }

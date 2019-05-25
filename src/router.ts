@@ -12,11 +12,13 @@ const router = new Router({
       path: '/',
       name: 'main',
       component: () => import('./views/Main.vue'),
+      redirect: { name: 'home' },
       children: [
         {
-          path: '',
+          path: 'home',
           name: 'home',
           component: () => import('./views/Home.vue'),
+          redirect: { name: 'community' },
           children: [
             {
               path: 'community',
@@ -82,7 +84,7 @@ router.beforeEach(async (to, from, next) => {
     router.app.$socket.emit('CHAT_CONNECT', { chatType: 'group', chatUuid: to.params.uuid })
   }
 
-  if (to.matched[1] && to.matched[1].path === '/') {
+  if (to.matched[1] && to.matched[1].path === '/home') {
     await store.dispatch('fetchPrivateChats')
   }
 

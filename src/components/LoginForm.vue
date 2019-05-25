@@ -2,19 +2,7 @@
   <div class="login-form">
     <h1>登录到团子</h1>
 
-    <div class="links">
-      <a href>
-        <font-awesome-icon :icon="['fab', 'facebook-f']" size="lg"/>
-      </a>
-      <a href>
-        <font-awesome-icon :icon="['fab', 'google-plus-g']" size="lg"/>
-      </a>
-      <a href>
-        <font-awesome-icon :icon="['fab', 'linkedin-in']" size="lg"/>
-      </a>
-    </div>
-
-    <p>或使用你的邮箱登录：</p>
+    <p>使用你的邮箱登录：</p>
 
     <el-form :model="formData" :rules="rules" ref="form">
       <el-form-item prop="email">
@@ -84,6 +72,7 @@ export default class LoginForm extends Vue {
     color: #3bb19b;
     font-weight: 900;
     letter-spacing: 4px;
+    margin-bottom: 40px;
   }
 
   .links {
@@ -112,7 +101,7 @@ export default class LoginForm extends Vue {
 
   .el-form {
     .el-input {
-      width: 320px;
+      width: 300px;
 
       .el-input__inner {
         background: #f1f5f4;

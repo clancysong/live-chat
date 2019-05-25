@@ -2,19 +2,7 @@
   <div class="register-form">
     <h1>注册账户</h1>
 
-    <div class="links">
-      <a href>
-        <font-awesome-icon :icon="['fab', 'facebook-f']" size="lg"/>
-      </a>
-      <a href>
-        <font-awesome-icon :icon="['fab', 'google-plus-g']" size="lg"/>
-      </a>
-      <a href>
-        <font-awesome-icon :icon="['fab', 'linkedin-in']" size="lg"/>
-      </a>
-    </div>
-
-    <p>或使用你的邮箱登录：</p>
+    <p>使用你的邮箱注册：</p>
 
     <el-form :model="formData" :rules="rules" ref="form">
       <el-form-item prop="name">
@@ -88,26 +76,7 @@ export default class RegisterForm extends Vue {
     color: #3bb19b;
     font-weight: 900;
     letter-spacing: 4px;
-  }
-
-  .links {
-    $icon-size: 48px;
-    margin: 24px 0;
-
-    > a > svg {
-      width: $icon-size;
-      height: $icon-size;
-      color: #1d2120;
-      padding: 12px;
-      border: 1px solid #e7ebea;
-      border-radius: 100%;
-      margin: 0 8px;
-    }
-
-    > a > svg:hover {
-      color: #666666;
-      transition: all 0.2s;
-    }
+    margin-bottom: 40px;
   }
 
   > p {
@@ -115,7 +84,7 @@ export default class RegisterForm extends Vue {
   }
 
   .el-form .el-input {
-    width: 320px;
+    width: 300px;
 
     .el-input__inner {
       background: #f1f5f4;

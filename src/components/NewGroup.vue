@@ -23,7 +23,7 @@ export default class NewGroup extends Vue {
   @Action('createGroup') private createGroupAction: (data: {}) => void
 
   private createGroup() {
-    this.$prompt('请输入').then(rs => this.createGroupAction({ name: rs.value }))
+    this.$prompt('请输入').then((rs: any) => this.createGroupAction({ name: rs.value }))
   }
 }
 </script>

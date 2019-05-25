@@ -11,7 +11,9 @@
       <el-menu-item index="home" route="/home">
         <div class="avatar">
           <div class="inner">
-            <font-awesome-icon :icon="['fas', 'bomb']" size="lg"/>
+            <div>
+              <font-awesome-icon :icon="['fas', 'bomb']" size="lg"/>
+            </div>
           </div>
         </div>
         <span slot="title">home</span>
@@ -26,7 +28,10 @@
         :route="`/groups/${group.uuid}`"
       >
         <div class="avatar">
-          <div class="inner">{{ group.name.slice(0, 1) }}</div>
+          <div class="inner">
+            <img v-if="group.avatar" :src="group.avatar">
+            <div v-else>{{ group.name.slice(0, 1) }}</div>
+          </div>
         </div>
         <span slot="title">{{ group.name }}</span>
       </el-menu-item>
@@ -108,6 +113,13 @@ export default class SideNav extends Vue {
           color: #b9bbbe;
           background-color: #2f3136;
           font-size: 18px;
+          overflow: hidden;
+
+          > img {
+            width: 48px;
+            height: 48px;
+            object-fit: cover;
+          }
         }
       }
     }
@@ -116,10 +128,13 @@ export default class SideNav extends Vue {
     .el-menu-item:hover {
       .avatar {
         .inner {
-          color: #fff;
-          background-color: #7289da;
           border-radius: 26%;
           transition: all 0.15s ease-out, color 0.15s ease-out;
+
+          > div {
+            color: #fff;
+            background-color: #7289da;
+          }
         }
       }
     }

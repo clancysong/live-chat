@@ -23,11 +23,11 @@
       <h3>频道</h3>
 
       <ul>
-        <li class="channel">
+        <li class="channel" v-for="channel in currentGroup.channels" :key="channel.id">
           <div class="inner">
             <div class="name">
               <font-awesome-icon :icon="['fab', 'slack-hash']" size="lg"/>
-              <span>general</span>
+              <span>{{ channel.name }}</span>
             </div>
 
             <div class="btns">

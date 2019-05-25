@@ -7,14 +7,14 @@
             <div class="bg">
               <img
                 class="cover"
-                src="https://cdn.discordapp.com/splashes/417739215355510784/e9dadb8eaa33c25e4a183d10ebe11f1c.jpg?size=1024"
+                :src="group.cover"
               >
               <div class="fade"></div>
             </div>
             <div class="info">
               <img
                 class="icon"
-                src="https://cdn.discordapp.com/icons/417739215355510784/a839bc2da2b368f704b1001ed2662b74.png"
+                :src="group.avatar"
               >
               <div class="right">
                 <h3 class="name">{{ group.name }}</h3>

@@ -2,7 +2,7 @@
   <div class="public-groups">
     <div class="groups">
       <el-row>
-        <el-col v-for="group in groups" :key="group.id" :span="8">
+        <el-col v-for="group in groups" :key="group.id" :xs="24" :sm="24" :md="12" :lg="8" :xl="8">
           <div class="card">
             <div class="bg">
               <img

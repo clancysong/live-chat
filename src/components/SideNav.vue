@@ -64,7 +64,7 @@ export default class SideNav extends Vue {
   private get activedItem() {
     const { name, params } = this.currentView
 
-    if (params.uuid) {
+    if (name === 'groups' && params.uuid) {
       return `${name}-${params.uuid}`
     } else {
       return 'home'
@@ -110,18 +110,10 @@ export default class SideNav extends Vue {
           font-size: 18px;
         }
       }
-
-      .avatar:hover {
-        .inner {
-          color: #fff;
-          background-color: #7289da;
-          border-radius: 26%;
-          transition: all 0.15s ease-out, color 0.15s ease-out;
-        }
-      }
     }
 
-    .el-menu-item.is-active {
+    .el-menu-item.is-active,
+    .el-menu-item:hover {
       .avatar {
         .inner {
           color: #fff;

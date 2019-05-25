@@ -200,8 +200,13 @@ export default class GroupChat extends Vue {
       display: flex;
 
       .btn {
-        margin: 0 8px;
+        margin: 0 10px;
         cursor: pointer;
+
+        svg {
+          width: 20px;
+          height: 20px;
+        }
       }
     }
   }
@@ -253,6 +258,7 @@ export default class GroupChat extends Vue {
               display: flex;
               align-items: center;
               flex-wrap: wrap;
+              padding-right: 20px;
 
               .name {
                 font-size: 16px;

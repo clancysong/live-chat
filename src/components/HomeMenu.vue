@@ -139,6 +139,7 @@ export default class HomeMenu extends Vue {
 
       .inner {
         background: #292b2f;
+        transition: all 0.3s;
 
         span {
           color: #ffffff;
@@ -149,6 +150,7 @@ export default class HomeMenu extends Vue {
     .el-menu-item.is-active {
       .inner {
         background-color: rgba(79, 84, 92, 0.6);
+        transition: all 0.2s ease-out;
 
         span {
           color: #ffffff;

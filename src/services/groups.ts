@@ -8,4 +8,6 @@ export default {
   fetchGroupInfo: (uuid: string) => axios.get(`${URL}/${uuid}`),
 
   createGroup: (data: {}) => axios.post(URL, data),
+
+  createChannel: (groupId: number, data: {}) => axios.post(`${URL}/${groupId}/channels`, data)
 }

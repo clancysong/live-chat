@@ -1,11 +1,11 @@
 import User from './User'
-import Message from './Message'
+import Channel from './Channel'
 
 export default interface Group {
   id: number
   uuid: string
   name: string
-  creator: number
+  creator_id: number
   members: User[]
-  messages: Message[]
+  channels: Channel[]
 }

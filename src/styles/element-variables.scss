@@ -5,3 +5,7 @@ $--color-primary: #3BB19B;
 $--font-path: '~element-ui/lib/theme-chalk/fonts';
 
 @import "~element-ui/packages/theme-chalk/src/index";
+
+.el-tooltip__popper.is-dark {
+  background: #000000;
+}

@@ -80,7 +80,11 @@ router.beforeEach(async (to, from, next) => {
   }
 
   if (to.name === 'groups') {
-    await store.dispatch('fetchGroupInfo', to.params.uuid)
+    const currentGroup = await store.dispatch('fetchGroupInfo', to.params.uuid)
+    const { channels } = currentGroup
+
+    if (channels.length > 0) store.commit('changeCurrentChannel', channels[0])
+
     router.app.$socket.emit('CHAT_CONNECT', { chatType: 'group', chatUuid: to.params.uuid })
   }
 

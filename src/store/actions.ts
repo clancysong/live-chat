@@ -50,9 +50,11 @@ const actions: ActionTree<State, any> = {
   },
 
   async fetchGroupInfo({ commit }, uuid: string) {
-    const rs = await groupService.fetchGroupInfo(uuid)
+    const { data } = await groupService.fetchGroupInfo(uuid)
 
-    commit('setCurrentGroup', rs.data)
+    commit('changeCurrentGroup', data)
+
+    return data
   },
 
   async joinGroup({ state, commit }, group: Group) {
@@ -71,6 +73,10 @@ const actions: ActionTree<State, any> = {
 
     commit('addGroup', group)
     router.push(`/groups/${group.uuid}`)
+  },
+
+  async createChannel(_, { groupId, channelInfo }) {
+    await groupService.createChannel(groupId, channelInfo)
   },
 
   async fetchFriends({ state }) {

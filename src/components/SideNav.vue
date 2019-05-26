@@ -129,7 +129,7 @@ export default class SideNav extends Vue {
       .avatar {
         .inner {
           border-radius: 26%;
-          transition: all 0.15s ease-out, color 0.15s ease-out;
+          transition: all 0.15s ease-out;
 
           > div {
             color: #fff;

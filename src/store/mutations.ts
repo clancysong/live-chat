@@ -18,8 +18,12 @@ const mutations: MutationTree<State> = {
     state.joinedGroups = groups
   },
 
-  setCurrentGroup(state, group) {
+  changeCurrentGroup(state, group) {
     state.currentGroup = group
+  },
+
+  changeCurrentChannel(state, channel) {
+    state.currentChannel = channel
   },
 
   addGroup(state, group) {
@@ -45,7 +49,7 @@ const mutations: MutationTree<State> = {
   SOCKET_MESSAGE_RECEIVE(state, message) {
     switch (message.chat_type) {
       case 'group': {
-        if (state.currentGroup) state.currentGroup.messages.push(message)
+        if (state.currentChannel) state.currentChannel.messages.push(message)
         break
       }
 

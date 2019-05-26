@@ -8,6 +8,7 @@ import User from '@/models/User'
 import Group from '@/models/Group'
 import FriendRequest from '@/models/FriendRequest'
 import { Route } from 'vue-router'
+import Channel from '@/models/Channel'
 
 Vue.use(Vuex)
 
@@ -21,6 +22,7 @@ export interface State {
   publicGroups: Group[]
   joinedGroups: Group[]
   currentGroup: Group | null
+  currentChannel: Channel | null
   privateChats: any
   currentPrivateChat: any
   friends: User[]

@@ -20,14 +20,27 @@
     </div>
 
     <div class="channel-list">
-      <h3>频道</h3>
+      <div class="title">
+        <h3>频道</h3>
 
-      <ul>
-        <li class="channel" v-for="channel in currentGroup.channels" :key="channel.id">
+        <el-tooltip class="item" content="新建频道" placement="top">
+          <div class="add-channel" @click="createChannel">
+            <font-awesome-icon :icon="['fas', 'plus']" size="lg"/>
+          </div>
+        </el-tooltip>
+      </div>
+
+      <el-menu :default-active="activedItem" class="menu" background-color="#2F3135" text-color="#fff">
+        <el-menu-item
+          v-for="channel in currentGroup.channels"
+          :key="channel.uuid"
+          :index="`channel-${channel.uuid}`"
+          @click="changeCurrentChannel(channel)"
+        >
           <div class="inner">
             <div class="name">
               <font-awesome-icon :icon="['fab', 'slack-hash']" size="lg"/>
-              <span>{{ channel.name }}</span>
+              <span slot="title">{{ channel.name }}</span>
             </div>
 
             <div class="btns">
@@ -39,8 +52,8 @@
               </div>
             </div>
           </div>
-        </li>
-      </ul>
+        </el-menu-item>
+      </el-menu>
     </div>
 
     <footer class="footer">
@@ -65,13 +78,23 @@
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator'
-import { State } from 'vuex-class'
+import { State, Action, Mutation } from 'vuex-class'
 import Group from '@/models/Group'
+import Channel from '@/models/Channel'
 
 @Component
 export default class Channels extends Vue {
   @State('user') private userState: {}
   @State('currentGroup') private currentGroup: Group
+  @State('currentChannel') private currentChannel: Group
+  @Mutation('changeCurrentChannel') private changeCurrentChannel: (channel: Channel) => void
+  @Action('createChannel') private createChannelAction: (payload: { groupId: number; channelInfo: {} }) => void
+
+  private get activedItem() {
+    const { uuid } = this.currentChannel
+
+    return `channel-${uuid}`
+  }
 
   private handleCommand(command: string) {
     switch (command) {
@@ -83,6 +106,14 @@ export default class Channels extends Vue {
 
   private generateInvitationCode() {
     return 'E4RG'
+  }
+
+  private createChannel() {
+    const { id } = this.currentGroup
+
+    this.$prompt('请输入频道名称').then((rs: any) =>
+      this.createChannelAction({ groupId: id, channelInfo: { name: rs.value } })
+    )
   }
 }
 </script>
@@ -116,30 +147,44 @@ export default class Channels extends Vue {
   > .channel-list {
     flex: auto;
 
-    > h3 {
-      font-size: 13px;
-      line-height: 16px;
-      font-weight: 600;
-      color: #8e9297;
-      margin: 20px 0 20px 20px;
-      text-align: start;
+    .title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 20px 10px;
+
+      > h3 {
+        font-size: 13px;
+        line-height: 16px;
+        font-weight: 600;
+        color: #8e9297;
+        text-align: start;
+      }
+
+      .add-channel {
+        font-size: 12px;
+        cursor: pointer;
+      }
     }
 
-    > ul {
-      list-style: none;
-      padding: 0;
+    .menu {
+      border: none;
+      font-weight: 500;
+      flex: auto;
 
-      > li {
+      .el-menu-item {
+        height: 40px;
+        margin: 1px 0;
+
         .inner {
-          height: 40px;
-          line-height: 40px;
+          height: 100%;
           padding: 0 8px;
-          margin: 1px 8px;
+          margin: 0 -12px;
           border-radius: 4px;
+          color: #ffffff;
           display: flex;
           justify-content: space-between;
-          background-color: #40444b;
-          color: #ffffff;
+          align-items: center;
 
           .name {
             font-size: 16px;
@@ -152,7 +197,7 @@ export default class Channels extends Vue {
           }
 
           .btns {
-            display: flex;
+            display: none;
 
             .btn {
               margin: 0 4px;
@@ -164,6 +209,38 @@ export default class Channels extends Vue {
                 cursor: pointer;
               }
             }
+          }
+        }
+      }
+
+      .el-menu-item:hover {
+        background: #2f3134 !important;
+
+        .inner {
+          background: #292b2f;
+          transition: all 0.2s ease-out;
+
+          span {
+            color: #ffffff;
+          }
+
+          .btns {
+            display: flex;
+          }
+        }
+      }
+
+      .el-menu-item.is-active {
+        .inner {
+          background-color: #40444b;
+          transition: all 0.2s ease-out;
+
+          span {
+            color: #ffffff;
+          }
+
+          .btns {
+            display: flex;
           }
         }
       }

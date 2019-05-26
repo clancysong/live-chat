@@ -30,12 +30,17 @@
         </el-tooltip>
       </div>
 
-      <el-menu :default-active="activedItem" class="menu" background-color="#2F3135" text-color="#fff">
+      <el-menu
+        :default-active="activedItem"
+        class="menu"
+        background-color="#2F3135"
+        text-color="#fff"
+      >
         <el-menu-item
           v-for="channel in currentGroup.channels"
           :key="channel.uuid"
           :index="`channel-${channel.uuid}`"
-          @click="changeCurrentChannel(channel)"
+          @click="changeChannel(channel)"
         >
           <div class="inner">
             <div class="name">
@@ -45,10 +50,10 @@
 
             <div class="btns">
               <div class="btn">
-                <font-awesome-icon :icon="['fas', 'user-plus']" size="lg"/>
-              </div>
-              <div class="btn">
                 <font-awesome-icon :icon="['fas', 'cog']" size="lg"/>
+              </div>
+              <div class="btn" @click="removeChannel(channel)">
+                <font-awesome-icon :icon="['fas', 'trash']" size="lg"/>
               </div>
             </div>
           </div>
@@ -87,8 +92,9 @@ export default class Channels extends Vue {
   @State('user') private userState: {}
   @State('currentGroup') private currentGroup: Group
   @State('currentChannel') private currentChannel: Group
-  @Mutation('changeCurrentChannel') private changeCurrentChannel: (channel: Channel) => void
+  @Action('fetchChannelInfo') private fetchChannelInfo: (uuid: string) => void
   @Action('createChannel') private createChannelAction: (payload: { groupId: number; channelInfo: {} }) => void
+  @Action('removeChannel') private removeChannelAction: (id: number) => void
 
   private get activedItem() {
     const { uuid } = this.currentChannel
@@ -108,12 +114,24 @@ export default class Channels extends Vue {
     return 'E4RG'
   }
 
+  private async changeChannel(channel: Channel) {
+    await this.fetchChannelInfo(channel.uuid)
+
+    this.$socket.emit('CHAT_CONNECT', { chatType: 'group', chatUuid: channel.uuid })
+  }
+
   private createChannel() {
     const { id } = this.currentGroup
 
     this.$prompt('请输入频道名称').then((rs: any) =>
       this.createChannelAction({ groupId: id, channelInfo: { name: rs.value } })
     )
+  }
+
+  private removeChannel(channel: Channel) {
+    this.$confirm('删除频道后所有的消息记录都会被删除，确定吗？').then(() => {
+      this.removeChannelAction(channel.id)
+    })
   }
 }
 </script>

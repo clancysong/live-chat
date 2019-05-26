@@ -20,7 +20,7 @@
       <div class="chat-frame">
         <div class="messages">
           <ul class="messages-list">
-            <li v-for="message in currentGroup.messages" :key="message.id">
+            <li v-for="message in currentChannel.messages" :key="message.id">
               <div class="left">
                 <div class="avatar">
                   <font-awesome-icon :icon="['fas', 'bomb']" size="lg"/>
@@ -35,7 +35,7 @@
           </ul>
         </div>
 
-        <el-form class="chat-form">
+        <el-form class="chat-form" @submit.native.prevent="submit">
           <el-input v-model="inputValue" placeholder="输入文字以发送消息">
             <el-button slot="append" @click="submit">
               <font-awesome-icon :icon="['fas', 'paper-plane']" size="lg"/>
@@ -109,6 +109,7 @@ import Message from '@/models/Message'
 export default class GroupChat extends Vue {
   @Prop(Number) private readonly id: number
   @State('currentGroup') private currentGroup: Group
+  @State('currentChannel') private currentChannel: Group
   @Action('sendFriendRequest') private sendFriendRequest: (request: { receiver_id: number }) => any
   @Action('createPrivateChat') private createPrivateChat: (data: { receiver_id: number }) => any
 

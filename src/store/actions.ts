@@ -75,8 +75,26 @@ const actions: ActionTree<State, any> = {
     router.push(`/groups/${group.uuid}`)
   },
 
-  async createChannel(_, { groupId, channelInfo }) {
-    await groupService.createChannel(groupId, channelInfo)
+  async fetchChannelInfo({ state }, uuid) {
+    const { data: channel } = await groupService.fetchChannelInfo(uuid)
+
+    state.currentChannel = channel
+  },
+
+  async createChannel({ state }, { groupId, channelInfo }) {
+    const { data: channel } = await groupService.createChannel(groupId, channelInfo)
+
+    if (state.currentGroup) state.currentGroup.channels.push(channel)
+  },
+
+  async removeChannel({ state }, id) {
+    await groupService.removeChannel(id)
+
+    if (state.currentGroup) {
+      const { channels } = state.currentGroup
+
+      channels.splice(channels.findIndex(c => c.id === id), 1)
+    }
   },
 
   async fetchFriends({ state }) {

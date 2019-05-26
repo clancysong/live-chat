@@ -9,6 +9,8 @@ export default {
 
   createGroup: (data: {}) => axios.post(URL, data),
 
+  removeGroup: (id: number) => axios.delete(`${URL}/${id}`),
+
   fetchChannelInfo: (uuid: string) => axios.get(`${URL}/channels/${uuid}`),
 
   createChannel: (groupId: number, data: {}) => axios.post(`${URL}/${groupId}/channels`, data),

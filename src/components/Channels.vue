@@ -10,11 +10,12 @@
           <el-dropdown-item command="invite">
             <font-awesome-icon :icon="['fas', 'user-plus']" size="lg"/>&nbsp;&nbsp;邀请其他人
           </el-dropdown-item>
-          <el-dropdown-item>黄金糕</el-dropdown-item>
-          <el-dropdown-item>狮子头</el-dropdown-item>
-          <el-dropdown-item>螺蛳粉</el-dropdown-item>
-          <el-dropdown-item>双皮奶</el-dropdown-item>
-          <el-dropdown-item>蚵仔煎</el-dropdown-item>
+          <el-dropdown-item command="leave" v-show="currentGroup.creator_id !== userState.id">
+            <font-awesome-icon :icon="['fas', 'sign-out-alt']" size="lg"/>&nbsp;&nbsp;离开群组
+          </el-dropdown-item>
+          <el-dropdown-item command="delete" v-show="currentGroup.creator_id === userState.id">
+            <font-awesome-icon :icon="['fas', 'trash-alt']" size="lg"/>&nbsp;&nbsp;删除群组
+          </el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
     </div>
@@ -102,8 +103,11 @@ import Channel from '@/models/Channel'
 @Component
 export default class Channels extends Vue {
   @State('user') private userState: {}
+  @State('joinedGroups') private joinedGroups: Group[]
   @State('currentGroup') private currentGroup: Group
   @State('currentChannel') private currentChannel: Group
+  @Action('leaveGroup') private leaveGroupAction: (id: number) => void
+  @Action('removeGroup') private removeGroupAction: (id: number) => void
   @Action('fetchChannelInfo') private fetchChannelInfo: (uuid: string) => void
   @Action('createChannel') private createChannelAction: (payload: { groupId: number; channelInfo: {} }) => void
   @Action('removeChannel') private removeChannelAction: (id: number) => void
@@ -120,12 +124,29 @@ export default class Channels extends Vue {
     switch (command) {
       case 'invite': {
         this.inviteDialogVisible = true
+        break
+      }
+
+      case 'leave': {
+        this.$confirm('您确定要离开该群组吗？').then(async () => {
+          await this.leaveGroupAction(this.currentGroup.id)
+          if (this.joinedGroups.length > 0) this.$router.push(`/groups/${this.joinedGroups[0].uuid}`)
+        })
+        break
+      }
+
+      case 'delete': {
+        this.$confirm('删除群组后所有的成员、频道、消息都会被清除，确定吗？').then(async () => {
+          await this.removeGroupAction(this.currentGroup.id)
+          if (this.joinedGroups.length > 0) this.$router.push(`/groups/${this.joinedGroups[0].uuid}`)
+        })
+        break
+      }
+
+      default: {
+        break
       }
     }
-  }
-
-  private generateInvitationCode() {
-    return 'E4RG'
   }
 
   private async changeChannel(channel: Channel) {

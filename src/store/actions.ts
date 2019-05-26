@@ -78,11 +78,25 @@ const actions: ActionTree<State, any> = {
     return rs
   },
 
+  async leaveGroup({ state }, id) {
+    await selfService.leaveGroup(id)
+    const { joinedGroups: groups } = state
+
+    groups.splice(groups.findIndex(g => g.id === id), 1)
+  },
+
   async createGroup({ commit }, data) {
     const { data: group } = await groupService.createGroup(data)
 
     commit('addGroup', group)
     router.push(`/groups/${group.uuid}`)
+  },
+
+  async removeGroup({ state }, id) {
+    const { data: group } = await groupService.removeGroup(id)
+    const { joinedGroups: groups } = state
+
+    groups.splice(groups.findIndex(g => g.id === id), 1)
   },
 
   async fetchChannelInfo({ state }, uuid) {

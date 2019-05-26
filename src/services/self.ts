@@ -9,6 +9,8 @@ export default {
 
   joinGroup: (way: string, data: {}) => axios.post(`${URL}/groups?way=${way}`, data),
 
+  leaveGroup: (id: number) => axios.delete(`${URL}/groups/${id}`),
+
   fetchFriends: () => axios.get(`${URL}/friends`),
 
   removeFriend: (id: number) => axios.delete(`${URL}/friends/${id}`),

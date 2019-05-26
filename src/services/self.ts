@@ -7,7 +7,7 @@ export default {
 
   fetchJoinedGroups: () => axios.get(`${URL}/groups`),
 
-  joinGroup: (data: {}) => axios.post(`${URL}/groups`, data),
+  joinGroup: (way: string, data: {}) => axios.post(`${URL}/groups?way=${way}`, data),
 
   fetchFriends: () => axios.get(`${URL}/friends`),
 

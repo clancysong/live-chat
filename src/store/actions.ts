@@ -59,13 +59,23 @@ const actions: ActionTree<State, any> = {
 
   async joinGroup({ state, commit }, group: Group) {
     if (state.user) {
-      const rs: any = await selfService.joinGroup({ user_id: state.user.id, group_id: group.id })
+      const rs: any = await selfService.joinGroup('id', { user_id: state.user.id, group_id: group.id })
 
       if (rs.code === 100) commit('addGroup', group)
       router.push(`/groups/${group.uuid}`)
 
       return rs
     }
+  },
+
+  async joinGroupByInviteCode({ state, commit }, inviteCode) {
+    const rs: any = await selfService.joinGroup('invite_code', { invite_code: inviteCode })
+    const { code, data: group } = rs
+
+    if (code === 100) commit('addGroup', group)
+    if (code === 100 || code === 102) router.push(`/groups/${group.uuid}`)
+
+    return rs
   },
 
   async createGroup({ commit }, data) {

@@ -78,6 +78,18 @@
         </div>
       </div>
     </footer>
+
+    <el-dialog
+      title="邀请码"
+      :visible.sync="inviteDialogVisible"
+      :modal-append-to-body="false"
+      custom-class="invite-dialog"
+      width="30%"
+    >
+      <font-awesome-icon :icon="['fas', 'quote-left']" size="lg"/>
+      <span>{{ currentGroup.invite_code }}</span>
+      <font-awesome-icon :icon="['fas', 'quote-right']" size="lg"/>
+    </el-dialog>
   </div>
 </template>
 
@@ -96,6 +108,8 @@ export default class Channels extends Vue {
   @Action('createChannel') private createChannelAction: (payload: { groupId: number; channelInfo: {} }) => void
   @Action('removeChannel') private removeChannelAction: (id: number) => void
 
+  private inviteDialogVisible = false
+
   private get activedItem() {
     const { uuid } = this.currentChannel
 
@@ -105,7 +119,7 @@ export default class Channels extends Vue {
   private handleCommand(command: string) {
     switch (command) {
       case 'invite': {
-        const code = this.generateInvitationCode()
+        this.inviteDialogVisible = true
       }
     }
   }
@@ -309,6 +323,14 @@ export default class Channels extends Vue {
         color: #b9bbbe;
         cursor: pointer;
       }
+    }
+  }
+
+  .invite-dialog {
+    span {
+      font-weight: 600;
+      font-size: 20px;
+      margin: 0 10px;
     }
   }
 }

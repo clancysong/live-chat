@@ -30,6 +30,20 @@ const mutations: MutationTree<State> = {
     state.joinedGroups.push(group)
   },
 
+  removeFromJoinedGroups(state, id) {
+    const { joinedGroups: groups } = state
+    const index = groups.findIndex(g => g.id === id)
+
+    if (index >= 0) groups.splice(index, 1)
+  },
+
+  removeFromPublicGroups(state, id) {
+    const { publicGroups: groups } = state
+    const index = groups.findIndex(g => g.id === id)
+
+    if (index >= 0) groups.splice(index, 1)
+  },
+
   SOCKET_USER_COME_ONLINE(state, user) {
     if (state.currentGroup) {
       const member = state.currentGroup.members.find(m => m.id === user.id)

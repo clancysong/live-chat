@@ -7,4 +7,5 @@ export default interface User {
   password: string
   status: string
   groups: Group[]
+  permission_level: number
 }

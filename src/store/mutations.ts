@@ -44,6 +44,13 @@ const mutations: MutationTree<State> = {
     if (index >= 0) groups.splice(index, 1)
   },
 
+  updateFromPublicGroups(state, group) {
+    const { publicGroups: groups } = state
+    const index = groups.findIndex(g => g.id === group.id)
+
+    if (index >= 0) groups.splice(index, 1, group)
+  },
+
   SOCKET_USER_COME_ONLINE(state, user) {
     if (state.currentGroup) {
       const member = state.currentGroup.members.find(m => m.id === user.id)

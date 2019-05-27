@@ -98,6 +98,12 @@ const actions: ActionTree<State, any> = {
     commit('removeFromPublicGroups', id)
   },
 
+  async updateGroup({ commit }, { id, data }) {
+    const { data: group } = await groupService.updateGroup(id, data)
+
+    commit('updateFromPublicGroups', group)
+  },
+
   async fetchChannelInfo({ state }, uuid) {
     const { data: channel } = await groupService.fetchChannelInfo(uuid)
 

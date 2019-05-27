@@ -6,6 +6,8 @@ export default interface Group {
   uuid: string
   name: string
   creator_id: number
+  avatar: string
+  cover: string
   members: User[]
   channels: Channel[]
 }

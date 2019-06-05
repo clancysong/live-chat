@@ -4,6 +4,7 @@
       <el-aside width="200px">
         <el-menu class="menu" :default-active="activedItem" :router="true">
           <el-menu-item index="groups">公共群组管理</el-menu-item>
+          <el-menu-item index="users">敏感词管理</el-menu-item>
         </el-menu>
       </el-aside>
 

@@ -56,7 +56,7 @@ export default class PublicGroups extends Vue {
 <style lang="scss">
 .public-groups {
   width: 100%;
-  padding: 40px 100px;
+  padding: 20px 0;
 
   .groups {
     .card {

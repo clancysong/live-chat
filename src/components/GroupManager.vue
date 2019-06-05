@@ -19,8 +19,7 @@
       </el-table-column>
     </el-table>
 
-    <el-dialog :visible.sync="editdialogVisible" :modal-append-to-body="false" width="60%">
-      <h2>编辑群组信息</h2>
+    <el-dialog title="编辑群组信息" :visible.sync="editdialogVisible" :modal-append-to-body="false" width="40%">
       <el-form :model="formData">
         <el-form-item label="群组头像">
           <label for="avatar-file">
@@ -198,13 +197,13 @@ export default class GroupManager extends Vue {
 
     .cover {
       svg {
-        width: 32px;
-        height: 32px;
+        width: 64px;
+        height: 64px;
       }
 
       > img {
-        width: 192px;
-        height: 108px;
+        width: 384px;
+        height: 216px;
       }
     }
 

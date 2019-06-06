@@ -120,7 +120,7 @@ router.beforeEach(async (to, from, next) => {
       }
     }
 
-    if (rootPath === '/home') {
+    if (rootPath === 'home') {
       await store.dispatch('fetchPrivateChats')
     }
 

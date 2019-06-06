@@ -83,7 +83,7 @@ const mutations: MutationTree<State> = {
         break
       }
     }
-  }
+  },
 }
 
 export default mutations

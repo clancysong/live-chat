@@ -7,7 +7,7 @@
       </div>
 
       <div class="btns">
-        <div class="btn">
+        <div class="btn" @click="connectToRtc">
           <font-awesome-icon :icon="['fas', 'video']" size="lg"/>
         </div>
         <div class="btn">
@@ -15,7 +15,8 @@
         </div>
         <div class="btn">
           <font-awesome-icon :icon="['fas', 'user-plus']" size="lg"/>
-        </div><div class="btn">
+        </div>
+        <div class="btn">
           <font-awesome-icon :icon="['fas', 'question-circle']" size="lg"/>
         </div>
       </div>
@@ -38,9 +39,12 @@
               </div>
             </li>
           </ul>
+
+          <video id="localVideo" autoplay></video>
+          <video id="remoteVideo" autoplay></video>
         </div>
 
-        <el-form class="chat-form">
+        <el-form class="chat-form" @submit.native.prevent="submit">
           <el-input v-model="inputValue" placeholder="输入文字以发送消息">
             <el-button slot="append" @click="submit">
               <font-awesome-icon :icon="['fas', 'paper-plane']" size="lg"/>
@@ -61,9 +65,70 @@ import Message from '@/models/Message'
 @Component
 export default class PrivateChat extends Vue {
   @Prop(Number) private readonly id: number
-  @State('currentPrivateChat') private currentPrivateChat: Group
+  @State('currentPrivateChat') private currentPrivateChat: any
 
   private inputValue = ''
+  private pc: RTCPeerConnection
+
+  private mounted() {
+    const localVideo: any = document.getElementById('localVideo')
+    const remoteVideo: any = document.getElementById('remoteVideo')
+
+    if (navigator.getUserMedia) {
+      navigator.getUserMedia(
+        {
+          video: true,
+          audio: false
+        },
+        (stream: MediaStream) => {
+          if (localVideo) localVideo.srcObject = stream
+
+          if (RTCPeerConnection) {
+            this.pc = new RTCPeerConnection({
+              iceServers: [
+                {
+                  urls: 'stun:173.194.202.127:19302'
+                }
+              ]
+            })
+
+            stream.getTracks().forEach(t => this.pc.addTrack(t, stream))
+
+            this.pc.ontrack = e => {
+              const [stream] = e.streams
+              remoteVideo.srcObject = stream
+            }
+
+            this.$socket.on('OFFER', async (offer: any) => {
+              console.log('连接请求', offer)
+              this.pc.setRemoteDescription(new RTCSessionDescription(offer))
+              const answer = await this.pc.createAnswer()
+
+              this.pc.setLocalDescription(answer)
+
+              this.$socket.emit('ANSWER', answer)
+            })
+
+            this.$socket.on('ANSWER', async (answer: any) => {
+              console.log('连接回应', answer)
+              this.pc.setRemoteDescription(new RTCSessionDescription(answer))
+            })
+          }
+        },
+        (error: MediaStreamError) => {
+          console.log(error)
+        }
+      )
+    }
+  }
+
+  private async connectToRtc() {
+    const { userb_id } = this.currentPrivateChat
+    const offer = await this.pc.createOffer()
+
+    this.$socket.emit('OFFER', offer)
+    this.pc.setLocalDescription(offer)
+  }
 
   private submit() {
     if (this.inputValue) {
@@ -194,6 +259,11 @@ export default class PrivateChat extends Vue {
               }
             }
           }
+        }
+
+        > video {
+          width: 300px;
+          height: 150px;
         }
       }
 

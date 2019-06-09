@@ -3,7 +3,9 @@ import router from '@/router'
 import authService from '@/services/auth'
 import selfService from '@/services/self'
 import groupService from '@/services/groups'
+import wordService from '@/services/sensitiveWords'
 import Group from '@/models/Group'
+import { MessageBox } from 'element-ui'
 import { State } from './index'
 
 const actions: ActionTree<State, any> = {
@@ -11,8 +13,17 @@ const actions: ActionTree<State, any> = {
     const rs = await authService.login(data)
 
     if (rs) {
-      commit('setUser', rs.data)
-      router.push({ path: '/' })
+      const user = rs.data
+
+      commit('setUser', user)
+
+      if (user.permission_level === 3) {
+        MessageBox.confirm('检测到您是系统管理员用户，是否进入后台管理页面？')
+          .then(() => router.push({ path: '/admin' }))
+          .catch(() => router.push({ path: '/' }))
+      } else {
+        router.push({ path: '/' })
+      }
     }
 
     return rs
@@ -190,6 +201,25 @@ const actions: ActionTree<State, any> = {
     const { data } = await selfService.fetchPrivateChatInfo(uuid)
 
     state.currentPrivateChat = data
+  },
+
+  async fetchSensitiveWords({ state }) {
+    const { data } = await wordService.fetchWords()
+
+    state.sensitiveWords = data
+  },
+
+  async createSensitiveWord({ state }, content) {
+    const { data } = await wordService.createWord({ content })
+
+    state.sensitiveWords.push(data)
+  },
+
+  async removeSensitiveWord({ state }, id) {
+    const { data } = await wordService.removeWord(id)
+    const { sensitiveWords } = state
+
+    sensitiveWords.splice(sensitiveWords.findIndex(i => i.id === id), 1)
   }
 }
 

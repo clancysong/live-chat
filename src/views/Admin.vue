@@ -3,8 +3,8 @@
     <el-container style="height: 100vh; border: 1px solid #eee">
       <el-aside width="200px">
         <el-menu class="menu" :default-active="activedItem" :router="true">
-          <el-menu-item index="groups">公共群组管理</el-menu-item>
-          <el-menu-item index="users">敏感词管理</el-menu-item>
+          <el-menu-item index="groups" route="/admin/groups">公共群组管理</el-menu-item>
+          <el-menu-item index="words" route="/admin/words">敏感词管理</el-menu-item>
         </el-menu>
       </el-aside>
 

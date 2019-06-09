@@ -8,5 +8,6 @@ export default {
   privateChats: [],
   currentPrivateChat: null,
   friends: [],
-  friendRequests: []
+  friendRequests: [],
+  sensitiveWords: [],
 }

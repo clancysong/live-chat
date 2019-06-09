@@ -27,4 +27,5 @@ export interface State {
   currentPrivateChat: any
   friends: User[]
   friendRequests: FriendRequest[]
+  sensitiveWords: any[]
 }

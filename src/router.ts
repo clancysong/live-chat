@@ -63,6 +63,11 @@ const router = new Router({
           path: 'groups',
           name: 'groups',
           component: () => import('./components/GroupManager.vue')
+        },
+        {
+          path: 'words',
+          name: 'words',
+          component: () => import('./components/SensitiveWordManager.vue')
         }
       ]
     }
@@ -86,6 +91,7 @@ router.beforeEach(async (to, from, next) => {
       router.push(from.path)
     } else {
       await store.dispatch('fetchPublicGroups')
+      await store.dispatch('fetchSensitiveWords')
     }
   } else {
     if (to.name !== 'login') {

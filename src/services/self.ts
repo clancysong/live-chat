@@ -5,6 +5,8 @@ const URL = '/api/v1/self'
 export default {
   fetchUserInfo: () => axios.get(URL),
 
+  updateUserInfo: (data: any) => axios.put(URL, data),
+
   fetchJoinedGroups: () => axios.get(`${URL}/groups`),
 
   joinGroup: (way: string, data: {}) => axios.post(`${URL}/groups?way=${way}`, data),

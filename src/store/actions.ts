@@ -37,6 +37,14 @@ const actions: ActionTree<State, any> = {
     return rs
   },
 
+  async updateUserInfo({ commit }, data) {
+    const rs = await selfService.updateUserInfo(data)
+
+    commit('setUser', rs.data)
+
+    return rs
+  },
+
   async fetchPublicGroups({ commit }) {
     const rs = await groupService.fetchPublicGroups()
 

@@ -71,6 +71,32 @@ export default class PrivateChat extends Vue {
   private pc: RTCPeerConnection
 
   private mounted() {
+    this.$socket.on('OFFER', async (offer: any) => {
+      console.log('连接请求', offer)
+
+      const cb = async () => {
+        this.pc.setRemoteDescription(new RTCSessionDescription(offer))
+        const answer = await this.pc.createAnswer()
+
+        this.pc.setLocalDescription(answer)
+
+        this.$socket.emit('ANSWER', answer)
+      }
+
+      if (this.pc) {
+        cb()
+      } else {
+        this.createVideoStream(cb)
+      }
+    })
+
+    this.$socket.on('ANSWER', async (answer: any) => {
+      console.log('连接回应', answer)
+      this.pc.setRemoteDescription(new RTCSessionDescription(answer))
+    })
+  }
+
+  private createVideoStream(callback: () => void = () => {}) {
     const localVideo: any = document.getElementById('localVideo')
     const remoteVideo: any = document.getElementById('remoteVideo')
 
@@ -99,20 +125,7 @@ export default class PrivateChat extends Vue {
               remoteVideo.srcObject = stream
             }
 
-            this.$socket.on('OFFER', async (offer: any) => {
-              console.log('连接请求', offer)
-              this.pc.setRemoteDescription(new RTCSessionDescription(offer))
-              const answer = await this.pc.createAnswer()
-
-              this.pc.setLocalDescription(answer)
-
-              this.$socket.emit('ANSWER', answer)
-            })
-
-            this.$socket.on('ANSWER', async (answer: any) => {
-              console.log('连接回应', answer)
-              this.pc.setRemoteDescription(new RTCSessionDescription(answer))
-            })
+            callback()
           }
         },
         (error: MediaStreamError) => {
@@ -123,11 +136,19 @@ export default class PrivateChat extends Vue {
   }
 
   private async connectToRtc() {
-    const { userb_id } = this.currentPrivateChat
-    const offer = await this.pc.createOffer()
+    const cb = async () => {
+      const { userb_id } = this.currentPrivateChat
+      const offer = await this.pc.createOffer()
 
-    this.$socket.emit('OFFER', offer)
-    this.pc.setLocalDescription(offer)
+      this.$socket.emit('OFFER', offer)
+      this.pc.setLocalDescription(offer)
+    }
+
+    if (this.pc) {
+      cb()
+    } else {
+      this.createVideoStream(cb)
+    }
   }
 
   private submit() {

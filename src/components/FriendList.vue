@@ -57,6 +57,7 @@ import FriendRequest from '@/models/FriendRequest'
 export default class FriendList extends Vue {
   @State('friends') private friends: User[]
   @State('friendRequests') private friendRequests: FriendRequest[]
+  @Action('fetchFriendRequest') private fetchFriendRequest: () => void
   @Action('handleFriendRequest') private handleFriendRequest: (params: { id: number; accept: boolean }) => void
   @Action('removeFriend') private removeFriendAction: (id: number) => void
 
@@ -92,6 +93,10 @@ export default class FriendList extends Vue {
 
   private changeTableState(state: string) {
     this.tableState = state
+
+    if (state === 'FRIENDS_REQUESTS') {
+      this.fetchFriendRequest()
+    }
   }
 
   private removeFriend(id: number) {

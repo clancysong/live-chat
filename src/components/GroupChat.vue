@@ -104,10 +104,12 @@ import { Vue, Component, Prop } from 'vue-property-decorator'
 import { Action, State, Getter, Mutation } from 'vuex-class'
 import Group from '@/models/Group'
 import Message from '@/models/Message'
+import User from '@/models/User'
 
 @Component
 export default class GroupChat extends Vue {
   @Prop(Number) private readonly id: number
+  @State('user') private user: User
   @State('currentGroup') private currentGroup: Group
   @State('currentChannel') private currentChannel: Group
   @Action('sendFriendRequest') private sendFriendRequest: (request: { receiver_id: number }) => any

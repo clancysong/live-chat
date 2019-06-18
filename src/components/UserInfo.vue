@@ -1,15 +1,21 @@
 <template>
   <div class="user-info">
-    <div class="name">
-      <h4>用户名</h4>
-      <span>{{ user.name }}</span>
-    </div>
-    <div class="name">
-      <h4>邮箱</h4>
-      <span>{{ user.email }}</span>
-    </div>
-
-    <el-button @click="handleEdit">编辑</el-button>
+    <el-card class="box-card" shadow="hover">
+      <div slot="header" class="clearfix">
+        <span>个人信息</span>
+        <el-button  @click="handleEdit" style="float: right; padding: 3px 0" type="text">编辑</el-button>
+      </div>
+      <div class="content">
+        <div class="name">
+          <h4>用户名</h4>
+          <span>{{ user.name }}</span>
+        </div>
+        <div class="name">
+          <h4>邮箱</h4>
+          <span>{{ user.email }}</span>
+        </div>
+      </div>
+    </el-card>
 
     <el-dialog
       title="编辑个人信息"
@@ -79,6 +85,12 @@ export default class UserInfo extends Vue {
 <style lang="scss">
 .user-info {
   width: 100%;
+  padding: 40px;
+
+  .el-card {
+    width: 30%;
+    margin: auto;
+  }
 }
 </style>
 

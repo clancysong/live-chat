@@ -55,7 +55,7 @@
           <font-awesome-icon :icon="['fas', 'bomb']" size="lg"/>
         </div>
         <div class="info">
-          <div class="name">cicec</div>
+          <div class="name">{{ user.name }}</div>
           <div class="code">#4241</div>
         </div>
       </div>
@@ -73,10 +73,12 @@
 import { Vue, Component } from 'vue-property-decorator'
 import { Action, State } from 'vuex-class'
 import { Route } from 'vue-router'
+import User from '@/models/User'
 
 @Component
 export default class HomeMenu extends Vue {
   @State('currentView') private currentView: Route
+  @State('user') private user: User
   @State('privateChats') private privateChats: []
 
   private get activedItem() {

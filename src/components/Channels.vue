@@ -68,7 +68,7 @@
           <font-awesome-icon :icon="['fas', 'bomb']" size="lg"/>
         </div>
         <div class="info">
-          <div class="name">cicec</div>
+          <div class="name">{{ userState.name }}</div>
           <div class="code">#4241</div>
         </div>
       </div>

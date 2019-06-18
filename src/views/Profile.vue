@@ -11,3 +11,9 @@ import UserInfo from '@/components/UserInfo.vue'
 @Component({ components: { UserInfo } })
 export default class Profile extends Vue {}
 </script>
+
+<style lang="scss">
+.profile {
+  width: 100%;
+}
+</style>

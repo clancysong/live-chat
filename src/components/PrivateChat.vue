@@ -7,24 +7,32 @@
       </div>
 
       <div class="btns">
-        <div class="btn" @click="connectToRtc">
-          <font-awesome-icon :icon="['fas', 'video']" size="lg"/>
-        </div>
-        <div class="btn">
-          <font-awesome-icon :icon="['fas', 'headphones']" size="lg"/>
-        </div>
-        <div class="btn">
-          <font-awesome-icon :icon="['fas', 'user-plus']" size="lg"/>
-        </div>
-        <div class="btn">
-          <font-awesome-icon :icon="['fas', 'question-circle']" size="lg"/>
-        </div>
+        <el-tooltip content="视频通话" placement="bottom">
+          <div class="btn" @click="connectToRtc">
+            <font-awesome-icon :icon="['fas', 'video']" size="lg"/>
+          </div>
+        </el-tooltip>
+        <el-tooltip content="加为好友" placement="bottom">
+          <div class="btn">
+            <font-awesome-icon :icon="['fas', 'user-plus']" size="lg"/>
+          </div>
+        </el-tooltip>
+        <el-tooltip content="使用帮助" placement="bottom">
+          <div class="btn">
+            <font-awesome-icon :icon="['fas', 'question-circle']" size="lg"/>
+          </div>
+        </el-tooltip>
       </div>
     </div>
 
     <div class="content">
       <div class="chat-frame">
         <div class="messages">
+          <div class="videos" v-show="this.pc">
+            <video id="localVideo" autoplay></video>
+            <video id="remoteVideo" autoplay></video>
+          </div>
+
           <ul class="messages-list">
             <li v-for="message in currentPrivateChat.messages" :key="message.id">
               <div class="left">
@@ -39,9 +47,6 @@
               </div>
             </li>
           </ul>
-
-          <video id="localVideo" autoplay></video>
-          <video id="remoteVideo" autoplay></video>
         </div>
 
         <el-form class="chat-form" @submit.native.prevent="submit">
@@ -66,28 +71,36 @@ import Message from '@/models/Message'
 export default class PrivateChat extends Vue {
   @Prop(Number) private readonly id: number
   @State('currentPrivateChat') private currentPrivateChat: any
+  @State('peerConnection') private pc: RTCPeerConnection
+  @Mutation('setPeerConnection') private setPeerConnection: (pc: RTCPeerConnection) => void
 
   private inputValue = ''
-  private pc: RTCPeerConnection
 
   private mounted() {
-    this.$socket.on('OFFER', async (offer: any) => {
-      console.log('连接请求', offer)
+    this.$socket.on('OFFER', async ({ sender, chat, offer }: any) => {
+      console.log('连接请求', { sender, chat, offer })
 
-      const cb = async () => {
-        this.pc.setRemoteDescription(new RTCSessionDescription(offer))
-        const answer = await this.pc.createAnswer()
+      this.$confirm(`${sender.name}发来视频通话请求，是否接通？`, '视频通话', {
+        confirmButtonText: '接通',
+        cancelButtonText: '拒绝'
+      }).then(async () => {
+        await this.$router.push(`/home/@me/${chat.uuid}`)
 
-        this.pc.setLocalDescription(answer)
+        const cb = async () => {
+          this.pc.setRemoteDescription(new RTCSessionDescription(offer))
+          const answer = await this.pc.createAnswer()
 
-        this.$socket.emit('ANSWER', answer)
-      }
+          this.pc.setLocalDescription(answer)
 
-      if (this.pc) {
-        cb()
-      } else {
-        this.createVideoStream(cb)
-      }
+          this.$socket.emit('ANSWER', answer)
+        }
+
+        if (this.pc) {
+          cb()
+        } else {
+          this.createVideoStream(cb)
+        }
+      })
     })
 
     this.$socket.on('ANSWER', async (answer: any) => {
@@ -110,13 +123,15 @@ export default class PrivateChat extends Vue {
           if (localVideo) localVideo.srcObject = stream
 
           if (RTCPeerConnection) {
-            this.pc = new RTCPeerConnection({
-              iceServers: [
-                {
-                  urls: 'stun:173.194.202.127:19302'
-                }
-              ]
-            })
+            this.setPeerConnection(
+              new RTCPeerConnection({
+                iceServers: [
+                  {
+                    urls: 'stun:173.194.202.127:19302'
+                  }
+                ]
+              })
+            )
 
             stream.getTracks().forEach(t => this.pc.addTrack(t, stream))
 
@@ -140,7 +155,7 @@ export default class PrivateChat extends Vue {
       const { userb_id } = this.currentPrivateChat
       const offer = await this.pc.createOffer()
 
-      this.$socket.emit('OFFER', offer)
+      this.$socket.emit('OFFER', { receiver_id: userb_id, offer })
       this.pc.setLocalDescription(offer)
     }
 
@@ -282,9 +297,14 @@ export default class PrivateChat extends Vue {
           }
         }
 
-        > video {
-          width: 300px;
-          height: 150px;
+        .videos {
+          display: flex;
+          padding: 20px 0;
+
+          > video {
+            width: 300px;
+            height: 150px;
+          }
         }
       }
 

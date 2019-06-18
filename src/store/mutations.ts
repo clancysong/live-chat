@@ -1,5 +1,6 @@
 import { MutationTree } from 'vuex'
 import { State } from './index'
+import router from '@/router'
 
 const mutations: MutationTree<State> = {
   setCurrentView(state, route) {
@@ -49,6 +50,10 @@ const mutations: MutationTree<State> = {
     const index = groups.findIndex(g => g.id === group.id)
 
     if (index >= 0) groups.splice(index, 1, group)
+  },
+
+  setPeerConnection(state, pc) {
+    state.peerConnection = pc
   },
 
   SOCKET_USER_COME_ONLINE(state, user) {

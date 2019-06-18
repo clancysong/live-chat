@@ -10,4 +10,5 @@ export default {
   friends: [],
   friendRequests: [],
   sensitiveWords: [],
+  peerConnection: null
 }

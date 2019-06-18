@@ -28,4 +28,5 @@ export interface State {
   friends: User[]
   friendRequests: FriendRequest[]
   sensitiveWords: any[]
+  peerConnection: RTCPeerConnection | null
 }

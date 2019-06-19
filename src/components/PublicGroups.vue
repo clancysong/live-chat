@@ -1,36 +1,28 @@
 <template>
   <div class="public-groups">
     <div class="groups">
-      <el-row>
-        <el-col v-for="group in groups" :key="group.id" :xs="24" :sm="24" :md="12" :lg="8" :xl="8">
-          <div class="card">
-            <div class="bg">
-              <img
-                class="cover"
-                :src="group.cover"
-              >
-              <div class="fade"></div>
-            </div>
-            <div class="info">
-              <img
-                class="icon"
-                :src="group.avatar"
-              >
-              <div class="right">
-                <h3 class="name">{{ group.name }}</h3>
-                <div class="online-number">
-                  <span class="dot"></span>
-                  1024人在线
-                </div>
-              </div>
-            </div>
-
-            <div class="btn-wrapper">
-              <el-button @click="joinGroup(group)">加入</el-button>
+      <div v-for="group in groups" :key="group.id" :xs="24" :sm="24" :md="12" :lg="8" :xl="8">
+        <div class="card">
+          <div class="bg">
+            <img class="cover" :src="group.cover">
+            <div class="fade"></div>
+          </div>
+          <div class="info">
+            <img class="icon" :src="group.avatar">
+            <div class="right">
+              <h3 class="name">{{ group.name }}</h3>
+              <!-- <div class="online-number">
+                <span class="dot"></span>
+                1024人在线
+              </div> -->
             </div>
           </div>
-        </el-col>
-      </el-row>
+
+          <div class="btn-wrapper">
+            <el-button @click="joinGroup(group)">加入</el-button>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -59,12 +51,14 @@ export default class PublicGroups extends Vue {
   padding: 20px 0;
 
   .groups {
+    display: flex;
+    flex-wrap: wrap;
+
     .card {
-      margin: 8px;
+      margin: 9px;
       border-radius: 5px;
       display: flex;
       flex-direction: column;
-      height: 100%;
       justify-content: flex-end;
       overflow: hidden;
       position: relative;
@@ -74,7 +68,8 @@ export default class PublicGroups extends Vue {
         z-index: -10;
 
         .cover {
-          width: 100%;
+          width: 372px;
+          height: 372px / 16 * 10;
           object-fit: cover;
           transition: all 0.2s ease-out;
         }
@@ -111,7 +106,8 @@ export default class PublicGroups extends Vue {
             color: #ffffff;
             font-size: 18px;
             font-weight: 500;
-            line-height: 1.2;
+            // line-height: 1.2;
+            line-height: 48px;
             margin-bottom: 2px;
           }
 
@@ -155,6 +151,7 @@ export default class PublicGroups extends Vue {
       position: absolute;
       bottom: 20px;
       right: 16px;
+      display: none;
 
       button {
         cursor: pointer;
@@ -162,6 +159,12 @@ export default class PublicGroups extends Vue {
         background: #43b581;
         color: #ffffff;
         font-weight: 600;
+      }
+    }
+
+    .card:hover {
+      .btn-wrapper {
+        display: block;
       }
     }
   }

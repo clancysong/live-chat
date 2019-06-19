@@ -103,11 +103,16 @@ const actions: ActionTree<State, any> = {
     commit('removeFromJoinedGroups', id)
   },
 
-  async createGroup({ commit }, data) {
+  async createGroup({ commit, state }, data) {
     const { data: group } = await groupService.createGroup(data)
 
-    commit('addGroup', group)
-    router.push(`/groups/${group.uuid}`)
+    if (group.type === 'public') {
+      state.publicGroups.push(group)
+    } else {
+      commit('addGroup', group)
+    }
+
+    return group
   },
 
   async removeGroup({ commit }, id) {

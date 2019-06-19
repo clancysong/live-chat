@@ -10,6 +10,9 @@
           <el-dropdown-item command="invite">
             <font-awesome-icon :icon="['fas', 'user-plus']" size="lg"/>&nbsp;&nbsp;邀请其他人
           </el-dropdown-item>
+          <el-dropdown-item command="edit" v-show="currentGroup.creator_id === userState.id">
+            <font-awesome-icon :icon="['fas', 'edit']" size="lg"/>&nbsp;&nbsp;编辑群组信息
+          </el-dropdown-item>
           <el-dropdown-item command="leave" v-show="currentGroup.creator_id !== userState.id">
             <font-awesome-icon :icon="['fas', 'sign-out-alt']" size="lg"/>&nbsp;&nbsp;离开群组
           </el-dropdown-item>
@@ -91,6 +94,57 @@
       <span>{{ currentGroup.invite_code }}</span>
       <font-awesome-icon :icon="['fas', 'quote-right']" size="lg"/>
     </el-dialog>
+
+    <el-dialog
+      class="edit-dialog"
+      title="编辑群组信息"
+      :visible.sync="editdialogVisible"
+      :modal-append-to-body="false"
+      width="40%"
+    >
+      <el-form :model="formData">
+        <el-form-item label="群组头像">
+          <label for="avatar-file">
+            <div class="avatar">
+              <img :src="formData.avatar.url" alt>
+              <div class="mask"></div>
+              <font-awesome-icon :icon="['fas', 'edit']" size="lg"/>
+            </div>
+          </label>
+          <input
+            type="file"
+            name="avatar"
+            id="avatar-file"
+            @change="handleFileChange"
+            style="display: none;"
+          >
+        </el-form-item>
+        <el-form-item label="群组封面">
+          <label for="cover-file">
+            <div class="cover">
+              <img class="cover" :src="formData.cover.url" alt>
+              <div class="mask"></div>
+              <font-awesome-icon :icon="['fas', 'edit']" size="lg"/>
+            </div>
+          </label>
+          <input
+            type="file"
+            name="cover"
+            id="cover-file"
+            @change="handleFileChange"
+            style="display: none;"
+          >
+        </el-form-item>
+        <el-form-item label="群组名称">
+          <el-input v-model="formData.name"></el-input>
+        </el-form-item>
+      </el-form>
+
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="editdialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="handleEditorSubmit">确 定</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -108,11 +162,14 @@ export default class Channels extends Vue {
   @State('currentChannel') private currentChannel: Group
   @Action('leaveGroup') private leaveGroupAction: (id: number) => void
   @Action('removeGroup') private removeGroupAction: (id: number) => void
+  @Action('updateGroup') private updateGroup: (paylod: { id: number; data: {} }) => any
   @Action('fetchChannelInfo') private fetchChannelInfo: (uuid: string) => void
   @Action('createChannel') private createChannelAction: (payload: { groupId: number; channelInfo: {} }) => void
   @Action('removeChannel') private removeChannelAction: (id: number) => void
 
   private inviteDialogVisible = false
+  private editdialogVisible = false
+  private formData: any = { name: '', avatar: { file: null, url: '' }, cover: { file: null, url: '' } }
 
   private get activedItem() {
     const { uuid } = this.currentChannel
@@ -124,6 +181,14 @@ export default class Channels extends Vue {
     switch (command) {
       case 'invite': {
         this.inviteDialogVisible = true
+        break
+      }
+
+      case 'edit': {
+        const { name, avatar, cover } = this.currentGroup
+
+        this.formData = { ...this.formData, name, avatar: { url: avatar }, cover: { url: cover } }
+        this.editdialogVisible = true
         break
       }
 
@@ -167,6 +232,34 @@ export default class Channels extends Vue {
     this.$confirm('删除频道后所有的消息记录都会被删除，确定吗？').then(() => {
       this.removeChannelAction(channel.id)
     })
+  }
+
+  private handleFileChange(e: any) {
+    const { name, files } = e.target
+
+    this.formData[name] = { file: files[0], url: URL.createObjectURL(files[0]) }
+  }
+
+  private async handleEditorSubmit() {
+    const { name, avatar, cover } = this.formData
+
+    if (name || avatar.file || cover.file) {
+      const loading = this.$loading({
+        text: '正在更新信息'
+      })
+      const data = new FormData()
+
+      if (name) data.append('name', name)
+      if (avatar.file) {
+        data.append('avatar', avatar.file)
+      }
+      if (cover.file) data.append('cover', cover.file)
+
+      await this.updateGroup({ id: this.currentGroup.id, data })
+
+      loading.close()
+      this.editdialogVisible = false
+    }
   }
 }
 </script>
@@ -352,6 +445,75 @@ export default class Channels extends Vue {
       font-weight: 600;
       font-size: 20px;
       margin: 0 10px;
+    }
+  }
+
+  .edit-dialog {
+    .avatar,
+    .cover {
+      position: relative;
+      cursor: pointer;
+
+      > img {
+        object-fit: cover;
+      }
+
+      .mask {
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        background: #000000;
+        opacity: 0;
+      }
+
+      svg {
+        width: 24px;
+        height: 24px;
+        color: #dddddd;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        opacity: 0;
+      }
+    }
+
+    .avatar {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+
+      > img {
+        width: 64px;
+        height: 64px;
+      }
+    }
+
+    .cover {
+      svg {
+        width: 64px;
+        height: 64px;
+      }
+
+      > img {
+        width: 384px;
+        height: 216px;
+      }
+    }
+
+    .avatar:hover,
+    .cover:hover {
+      .mask {
+        opacity: 0.2;
+        transition: opacity 0.2s ease-out;
+      }
+
+      svg {
+        opacity: 1;
+        transition: opacity 0.2s ease-out;
+      }
     }
   }
 }

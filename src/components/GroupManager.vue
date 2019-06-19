@@ -1,5 +1,9 @@
 <template>
   <div class="group-manager">
+    <h2>
+      <el-button @click="createGroup">创建</el-button>
+    </h2>
+
     <el-table :data="groups" style="width: 100%">
       <el-table-column label="群组头像">
         <template slot-scope="scope">
@@ -19,7 +23,12 @@
       </el-table-column>
     </el-table>
 
-    <el-dialog title="编辑群组信息" :visible.sync="editdialogVisible" :modal-append-to-body="false" width="40%">
+    <el-dialog
+      title="编辑群组信息"
+      :visible.sync="editdialogVisible"
+      :modal-append-to-body="false"
+      width="40%"
+    >
       <el-form :model="formData">
         <el-form-item label="群组头像">
           <label for="avatar-file">
@@ -74,12 +83,17 @@ import Group from '@/models/Group'
 @Component
 export default class GroupManager extends Vue {
   @State('publicGroups') private groups: Group[]
+  @Action('createGroup') private createGroupAction: (data: {}) => void
   @Action('removeGroup') private removeGroup: (id: number) => any
   @Action('updateGroup') private updateGroup: (paylod: { id: number; data: {} }) => any
 
   private editdialogVisible = false
   private editingGroup: Group | null = null
   private formData: any = { name: '', avatar: { file: null, url: '' }, cover: { file: null, url: '' } }
+
+  private createGroup() {
+    this.$prompt('请输入').then((rs: any) => this.createGroupAction({ name: rs.value, type: 'public' }))
+  }
 
   private handleDelete(group: Group) {
     this.$confirm('删除群组后所有的成员、频道、消息都会被清除，确定吗？').then(() => {
@@ -135,6 +149,10 @@ export default class GroupManager extends Vue {
 <style lang="scss">
 .group-manager {
   padding: 40px;
+
+  > h2 {
+    text-align: start;
+  }
 
   .el-table {
     tbody {
@@ -218,10 +236,6 @@ export default class GroupManager extends Vue {
         opacity: 1;
         transition: opacity 0.2s ease-out;
       }
-    }
-
-    .cover {
-      width: 60%;
     }
   }
 }

@@ -16,6 +16,8 @@ export default class Community extends Vue {}
 <style lang="scss">
 .community {
   padding: 40px 100px;
+  height: 100vh;
+  overflow-y: scroll;
 
   > h2 {
     color: #4f545c;

@@ -17,14 +17,24 @@
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator'
 import { Action, State } from 'vuex-class'
+import Group from '@/models/Group'
 
 @Component
 export default class NewGroup extends Vue {
-  @Action('createGroup') private createGroupAction: (data: {}) => void
+  @Action('createGroup') private createGroupAction: (data: {}) => Group
   @Action('joinGroupByInviteCode') private joinGroupByInviteCodeAction: (inviteCode: string) => any
 
   private createGroup() {
-    this.$prompt('请输入').then((rs: any) => this.createGroupAction({ name: rs.value }))
+    this.$prompt('请输入').then(async (rs: any) => {
+      const group: Group = await this.createGroupAction({ name: rs.value })
+
+      this.$notify({
+        title: '成功',
+        message: '创建成功',
+        type: 'success'
+      })
+      this.$router.push(`/groups/${group.uuid}`)
+    })
   }
 
   private joinGroup() {
